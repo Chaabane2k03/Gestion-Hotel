@@ -6,10 +6,17 @@ import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import javax.swing.border.LineBorder;
+
+import espace_Admin.AdminGui;
+import espace_client.Client_Gui;
 import guiElements.Button;
+import user.User;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
@@ -87,7 +94,31 @@ public class Login extends JFrame implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == exit) {
+		if(e.getSource() == button) {
+			String username = loginField.getText();
+	        char[] password = pwdField.getPassword();
+	        String pass = String.valueOf(password);
+	        User user = new User(username, User.cryptPass(pass));
+            user = user.getUserFromDB();
+	        if (user != null) {
+	        	//TODO : Check How the login is done and do your tests
+	        	if (user.getTypeuser() == 0) {
+	        		JOptionPane.showMessageDialog(null,"Login successful as admin ","Success",JOptionPane.INFORMATION_MESSAGE);
+                    new AdminGui();
+                    dispose();
+                } 
+	        	else {
+	        		JOptionPane.showMessageDialog(null,"Login successful as Client ","Success",JOptionPane.INFORMATION_MESSAGE);
+                    new Client_Gui();
+                    dispose();
+	        	}
+                    
+	        } else
+				JOptionPane.showMessageDialog(null, "Invalid Login or Password!","Error", JOptionPane.ERROR_MESSAGE);
+
+		}
+		
+		else if (e.getSource() == exit) {
 			setVisible(false);
 			dispose();
 		}
