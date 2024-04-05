@@ -2,17 +2,19 @@ package DatabaseManagement;
 
 import java.sql.*;
 
+import javax.swing.JOptionPane;
+
 public class Connect {
     static Connection connection;
 
     public Connect() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root",""); 
-            System.out.println("Connected successfully !!");
-             } 
-
-             catch(SQLException e)
-                      { System.out.println("Error while connecting!!!"); } }
+        } 
+        catch(SQLException e){ 
+        	JOptionPane.showMessageDialog(null, "Error while connecting with Database","Error", JOptionPane.ERROR_MESSAGE);
+        } 
+    }
 
     public Connection getConnection() {
         return connection;
