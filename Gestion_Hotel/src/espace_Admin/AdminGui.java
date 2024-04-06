@@ -79,7 +79,7 @@ public class AdminGui extends JFrame implements ActionListener {
         
         //bouton pour demander les statistiques :
         Button dashbord = new Button();
-        dashbord.setBounds(638, 150, 87, 76);
+        dashbord.setBounds(399, 271, 96, 68);
         getContentPane().add(dashbord);
         dashbord.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class AdminGui extends JFrame implements ActionListener {
         
         //Bouton pour gestion de paiement 
         Button gest_paiement = new Button();
-        gest_paiement.setBounds(160, 150, 68, 76);
+        gest_paiement.setBounds(641, 158, 74, 68);
         getContentPane().add(gest_paiement);
         gest_paiement.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -102,7 +102,7 @@ public class AdminGui extends JFrame implements ActionListener {
         
       //Bouton pour gestion de réservation : 
         Button gest_reservation = new Button();
-        gest_reservation.setBounds(151, 342, 87, 87);
+        gest_reservation.setBounds(163, 150, 68, 76);
         getContentPane().add(gest_reservation);
         gest_reservation.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ public class AdminGui extends JFrame implements ActionListener {
         
       //Bouton pour gestion de Chambre : 
         Button gest_chambre = new Button();
-        gest_chambre.setBounds(399, 270, 96, 68);
+        gest_chambre.setBounds(149, 350, 96, 68);
         getContentPane().add(gest_chambre);
         gest_chambre.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
