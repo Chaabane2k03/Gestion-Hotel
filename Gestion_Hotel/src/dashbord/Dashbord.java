@@ -1,4 +1,4 @@
-package espace_reservation;
+package dashbord;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
@@ -8,14 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
-import espace_client.Client_Gui;
+import espace_Admin.AdminGui;
 import guiElements.Button;
 import login.Login;
 import user.User;
 
 import java.awt.event.ActionEvent;
 
-public class DemandeReservationGUI extends JFrame implements ActionListener {
+public class Dashbord extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DemandeReservationGUI frame = new DemandeReservationGUI();
+					Dashbord frame = new Dashbord();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,14 +39,12 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	
 	User default_user_parameter= null;
 
-	public DemandeReservationGUI() {
-		new DemandeReservationGUI(default_user_parameter);
+	public Dashbord() {
+		new Dashbord(default_user_parameter);
 	}
-	
-	public DemandeReservationGUI(User user) {
+	public Dashbord(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -60,7 +58,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Client_Gui(user);
+				new AdminGui(user);
 				dispose();
 			}
 		});

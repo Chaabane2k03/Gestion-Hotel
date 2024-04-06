@@ -8,8 +8,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import compte.CompteGui;
+import espace_reservation.DemandeReservationGUI;
 import guiElements.Button;
 import login.Login;
+import user.User;
 
 public class Client_Gui extends JFrame implements ActionListener {
 
@@ -34,7 +37,12 @@ public class Client_Gui extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	User default_user_parameter= null;
 	public Client_Gui() {
+		new Client_Gui(default_user_parameter);
+	}
+	
+	public Client_Gui(User user) {
 		setTitle("Espace Client");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,13 +68,23 @@ public class Client_Gui extends JFrame implements ActionListener {
         Button reserver = new Button();
         reserver.setBounds(281, 199, 87, 76);
         getContentPane().add(reserver);
-        reserver.addActionListener(this);
+        reserver.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new DemandeReservationGUI(user);
+				dispose();
+			}
+        });
         
         //bouton pour demander gérer le compte :
         Button compte = new Button();
         compte.setBounds(485, 207, 81, 68);
         getContentPane().add(compte);
-        compte.addActionListener(this);
+        compte.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new CompteGui(user);
+				dispose();
+			}
+        });
         
         //bouton pour "Demande de l'aide"
         Button aide = new Button();

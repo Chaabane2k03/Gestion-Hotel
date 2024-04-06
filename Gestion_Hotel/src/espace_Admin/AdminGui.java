@@ -8,8 +8,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import chambre.ChambreGUI;
+import compte.CompteGui;
+import dashbord.Dashbord;
+import espace_paiement.PaiementGui;
+import espace_reservation.ReservationGUI;
 import guiElements.Button;
 import login.Login;
+import user.User;
 
 public class AdminGui extends JFrame implements ActionListener {
 
@@ -34,7 +40,11 @@ public class AdminGui extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	User default_user_parameter= null;
 	public AdminGui() {
+		new AdminGui(default_user_parameter);
+	}
+	public AdminGui(User user) {
 		setTitle("Espace Client");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,31 +70,57 @@ public class AdminGui extends JFrame implements ActionListener {
         Button compte = new Button();
         compte.setBounds(628, 350, 87, 68);
         getContentPane().add(compte);
-        compte.addActionListener(this);
+        compte.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new CompteGui(user);
+				dispose();
+			}
+        });
         
         //bouton pour demander les statistiques :
         Button dashbord = new Button();
         dashbord.setBounds(638, 150, 87, 76);
         getContentPane().add(dashbord);
-        dashbord.addActionListener(this);
+        dashbord.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new Dashbord(user);
+				dispose();
+			}
+        });
         
         //Bouton pour gestion de paiement 
         Button gest_paiement = new Button();
         gest_paiement.setBounds(160, 150, 68, 76);
         getContentPane().add(gest_paiement);
-        gest_paiement.addActionListener(this);
+        gest_paiement.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new PaiementGui(user);
+				dispose();
+			}
+        });
+        
         
       //Bouton pour gestion de réservation : 
         Button gest_reservation = new Button();
         gest_reservation.setBounds(151, 342, 87, 87);
         getContentPane().add(gest_reservation);
-        gest_reservation.addActionListener(this);
+        gest_reservation.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new ReservationGUI(user);
+				dispose();
+			}
+        });
         
-      //Bouton pour gestion de réservation : 
+      //Bouton pour gestion de Chambre : 
         Button gest_chambre = new Button();
         gest_chambre.setBounds(399, 270, 96, 68);
         getContentPane().add(gest_chambre);
-        gest_chambre.addActionListener(this);
+        gest_chambre.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new ChambreGUI(user);
+				dispose();
+			}
+        });
         
         
         //bouton pour "Demande de l'aide"
@@ -117,6 +153,7 @@ public class AdminGui extends JFrame implements ActionListener {
 			new Login();
             dispose();
 		}
+		
 		
 	}
 }

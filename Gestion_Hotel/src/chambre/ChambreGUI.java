@@ -7,10 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
 import espace_Admin.AdminGui;
 import guiElements.Button;
 import login.Login;
+import user.User;
 
 import java.awt.event.ActionEvent;
 
@@ -38,7 +38,15 @@ public class ChambreGUI extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	User default_user_parameter= null;
+
 	public ChambreGUI() {
+		new ChambreGUI(default_user_parameter);
+	}
+	
+	
+	
+	public ChambreGUI(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -52,7 +60,7 @@ public class ChambreGUI extends JFrame implements ActionListener {
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminGui();
+				new AdminGui(user);
 				dispose();
 			}
 		});

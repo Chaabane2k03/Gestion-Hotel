@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import espace_Admin.AdminGui;
 import espace_client.Client_Gui;
 import guiElements.Button;
+import reception.Receptioniste;
 import user.User;
 
 import java.awt.Color;
@@ -104,12 +105,17 @@ public class Login extends JFrame implements ActionListener {
 	        	//TODO : Check How the login is done and do your tests
 	        	if (user.getTypeuser() == 0) {
 	        		JOptionPane.showMessageDialog(null,"Login successful as admin ","Success",JOptionPane.INFORMATION_MESSAGE);
-                    new AdminGui();
+                    new AdminGui(user);
                     dispose();
                 } 
+	        	else if (user.getTypeuser() == 1) {
+	        		JOptionPane.showMessageDialog(null,"Login successful as Receptionist ","Success",JOptionPane.INFORMATION_MESSAGE);
+                    new Receptioniste(user);
+                    dispose();
+	        	}
 	        	else {
 	        		JOptionPane.showMessageDialog(null,"Login successful as Client ","Success",JOptionPane.INFORMATION_MESSAGE);
-                    new Client_Gui();
+                    new Client_Gui(user);
                     dispose();
 	        	}
                     

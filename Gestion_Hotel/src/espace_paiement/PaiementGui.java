@@ -7,10 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
 import espace_Admin.AdminGui;
 import guiElements.Button;
 import login.Login;
+import reception.Receptioniste;
+import user.User;
 
 import java.awt.event.ActionEvent;
 
@@ -38,7 +39,12 @@ public class PaiementGui extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	User default_user_parameter= null;
 	public PaiementGui() {
+		new PaiementGui(default_user_parameter);
+	}
+	
+	public PaiementGui(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -52,8 +58,13 @@ public class PaiementGui extends JFrame implements ActionListener {
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminGui();
-				dispose();
+				if (user.getTypeuser() == 0) {
+					new AdminGui(user);
+					dispose();
+				}
+				else {
+					new Receptioniste(user);
+				}
 			}
 		});
         home.setBounds(28, 77, 24, 24);

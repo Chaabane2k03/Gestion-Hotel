@@ -8,8 +8,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import compte.CompteGui;
+import espace_paiement.PaiementGui;
+import espace_reservation.ReservationGUI;
 import guiElements.Button;
 import login.Login;
+import user.User;
 
 public class Receptioniste extends JFrame implements ActionListener {
 
@@ -30,7 +34,14 @@ public class Receptioniste extends JFrame implements ActionListener {
 			}
 		});
 	}
-	public Receptioniste(){
+	
+	
+	User default_user_parameter= null;
+	public Receptioniste() {
+		new Receptioniste(default_user_parameter);
+	}
+	
+	public Receptioniste(User user){
 		setTitle("Espace Receptionist");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,20 +65,35 @@ public class Receptioniste extends JFrame implements ActionListener {
         Button gest_paiement = new Button();
         gest_paiement.setBounds(643, 185, 82, 68);
         getContentPane().add(gest_paiement);
-        gest_paiement.addActionListener(this);
+        gest_paiement.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new PaiementGui(user);
+				dispose();
+			}
+        });
         
         //Button Gestion de Reservation
         Button gest_reservation = new Button();
         gest_reservation.setBounds(172, 170, 68, 83);
         getContentPane().add(gest_reservation);
-        gest_reservation.addActionListener(this);
+        gest_reservation.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new ReservationGUI(user);
+				dispose();
+			}
+        });
         
         
       //Button Gestion de clients
-        Button gest_client = new Button();
-        gest_client.setBounds(406, 181, 102, 83);
-        getContentPane().add(gest_client);
-        gest_client.addActionListener(this);
+        Button gest_compte = new Button();
+        gest_compte.setBounds(406, 181, 102, 83);
+        getContentPane().add(gest_compte);
+        gest_compte.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				new CompteGui(user);
+				dispose();
+			}
+        });
         
         //Button : Gestion du compte
         Button paramCompte = new Button();

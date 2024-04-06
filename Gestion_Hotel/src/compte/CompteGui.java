@@ -1,4 +1,4 @@
-package espace_compte;
+package compte;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
@@ -7,10 +7,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
 import espace_Admin.AdminGui;
+import espace_client.Client_Gui;
 import guiElements.Button;
 import login.Login;
+import reception.Receptioniste;
+import user.User;
 
 import java.awt.event.ActionEvent;
 
@@ -38,7 +40,13 @@ public class CompteGui extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	
+	User default_user_parameter= null;
 	public CompteGui() {
+		new CompteGui(default_user_parameter);
+	}
+	
+	public CompteGui(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -52,11 +60,21 @@ public class CompteGui extends JFrame implements ActionListener {
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO : It's the same page for both admin and receptionist -> if / else soit espace admin or ll espace reception
-				new AdminGui();
-				dispose();
+				if (user.getTypeuser() == 0) {
+					new AdminGui(user);
+					dispose();
+				}
+				else if (user.getTypeuser() == 1) {
+					new Receptioniste(user);
+					dispose();
+				}
+				else {
+					new Client_Gui(user);
+					dispose();
+				}
 			}
 		});
+		
         home.setBounds(28, 77, 24, 24);
         getContentPane().add(home);
         
