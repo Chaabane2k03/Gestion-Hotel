@@ -129,6 +129,5 @@ public class Login extends JFrame implements ActionListener {
 			dispose();
 		}
 		
-		//TODO : make the login conditions using BD
 	}
 }

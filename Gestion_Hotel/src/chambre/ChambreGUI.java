@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 import javax.swing.DefaultCellEditor;
@@ -41,8 +42,11 @@ public class ChambreGUI extends JFrame implements ActionListener {
     Hashtable<Integer, Integer> chambreDict;
     JComboBox<String> statusComboBox;
     JComboBox<String> typeComboBox;
+    JComboBox<String> floorComboBox ;
     JComboBox<String> filtrestatusComboBox;
     JComboBox<String> filtretypeComboBox;
+    
+    
     JComboBox<String> filtrefloorComboBox;
 
     //Les Boutons :
@@ -157,14 +161,14 @@ public class ChambreGUI extends JFrame implements ActionListener {
         
         // Etage de les chamebres
         
-        JComboBox<String> floorComboBox = new JComboBox<String>();
+        floorComboBox = new JComboBox<String>();
         floorComboBox.setFocusable(false);
         floorComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Floor", "1", "2", "3" }));
         floorComboBox.setSize(104, 30);
         floorComboBox.setLocation(290, 325);
         
         
-        JComboBox<String> filtrefloorComboBox = new JComboBox<String>();
+        filtrefloorComboBox = new JComboBox<String>();
         filtrefloorComboBox.setFocusable(false);
         filtrefloorComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Floor", "1", "2", "3" }));
         filtrefloorComboBox.setSize(104, 30);
@@ -295,94 +299,91 @@ public class ChambreGUI extends JFrame implements ActionListener {
 		}
 		
 		if (e.getSource() == saveButton) {
-			/*
-			 * 
-			 * 
-			 * 
-			 * 
-			 * HashSet<Integer> numChambreSet = new HashSet<Integer>();
-                String error = "";
-                int i;
-                for (i = 0; i < jt.getRowCount(); i++) {
-                    int j;
-                    String caseJtable = "";
-                    for (j = 0; j < 6; j++) {
-                        caseJtable = String.valueOf(jt.getValueAt(i, j));
-                        if (j != 2 & j != 3) {
-                            if (!caseJtable.isEmpty()) {
-                                if (j != 5) {
-                                    try {
-                                        int a = Integer.valueOf(caseJtable);
-                                        if (j == 0)
-                                            if (numChambreSet.contains(a)) {
-                                                error = "Repeated room numbers !";
-                                                break;
-                                            } else
-                                                numChambreSet.add(a);
-
-                                    } catch (Exception e1) {
-                                        error = "Floor,capacity and Room number need to be integers !";
-                                        break;
-                                    }
-                                } else {
-                                    try {
-                                        Double a = Double.valueOf(caseJtable);
-
-                                    } catch (Exception e1) {
-                                        error = "Price should be double !";
-                                        break;
-                                    }
-                                }
-                            } else {
-                                error = "Make sure that there are no empty values !";
-                                break;
-                            }
-                        } else if (caseJtable.equals("Type") | caseJtable.equals("Status")) {
-                            error = "Make sure that you change the room type and status !";
-                            break;
-                        }
-
-                    }
-                    if (j < 6) {
-                        JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    } else {
-
-                        Chambre chambre = new Chambre();
-                        chambre.setNumChambre(Integer.valueOf(String.valueOf(jt.getValueAt(i, 0))));
-                        chambre.setCapacity(Integer.valueOf(String.valueOf(jt.getValueAt(i, 1))));
-                        if (String.valueOf(jt.getValueAt(i, 2)).equals("Normal"))
-                            chambre.setTypeChambre(1);
-                        else
-                            chambre.setTypeChambre(2);
-
-                        if (String.valueOf(jt.getValueAt(i, 3)).equals("Free"))
-                            chambre.setStatus(1);
-                        else if (String.valueOf(jt.getValueAt(i, 3)).equals("Occupied"))
-                            chambre.setStatus(2);
-                        else
-                            chambre.setStatus(3);
-
-                        chambre.setEtage(Integer.valueOf(String.valueOf(jt.getValueAt(i, 4))));
-                        chambre.setPrix_par_jour(Double.valueOf(String.valueOf(jt.getValueAt(i, 5))));
-                        Integer hash;
-                        if ((hash = chambreDict.get(chambre.getNumChambre())) != null) {
-                            if (hash != chambre.hashCode())
-                                Chambre.updateChambreDB(chambre);
-                        } else {
-                            Chambre.NewChambre(chambre);
-                            chambreDict.put(chambre.getNumChambre(), chambre.hashCode());
-                        }
-
-                    }
-                }
-                if (i >= jt.getRowCount())
-                    JOptionPane.showMessageDialog(null, "Succes !",
-                            "Info", JOptionPane.INFORMATION_MESSAGE);*/
+			HashSet<Integer> numChambreSet = new HashSet<Integer>();
+            String error = "";
+            int i;
+            for (i=0;i < jt.getRowCount();i++) {
+            	String caseJTable = "";
+            	int j;
+            	for (j=0;j<6;j++) {
+            		caseJTable = String.valueOf(jt.getValueAt(i, j));
+            		if (j != 2 & j != 3) {
+            			if(!caseJTable.isEmpty()) {
+            				if (j != 5) {
+            					try {
+            						int a = Integer.valueOf(caseJTable);
+            						if (j == 0)
+            							if(numChambreSet.contains(a)) {
+            								error = "Repeated room numbers !";
+            								break;
+            							}
+            							else
+            								numChambreSet.add(a);
+            					}catch (Exception e1) {
+            						error = "Floor, Capacity and Room number need to be integers ! ";
+            						break;
+            					}
+            				}else {
+            					try {
+            						Double a = Double.valueOf(caseJTable);
+            						
+            					}catch(Exception e1){
+            						error = "Price should be Double";
+            						break;
+            					}
+            				}
+            				
+            	}else {
+            		error = "Make sure there are no empty values !";
+            		break;
+            	}
+            		
+            }else if(caseJTable.equals("Type") | caseJTable.equals("Status")) {
+            	error = "Make sure that you change the room type and status";
+            	break;
+            }
+            	
+            	
+            	
+            }
+            if (j <6) {
+            	JOptionPane.showMessageDialog(null, error,"Error",JOptionPane.ERROR_MESSAGE);
+            	break;
+            }else {
+            	Chambre chambre = new Chambre();
+            	chambre.setNumChambre(Integer.valueOf(String.valueOf(jt.getValueAt(i, 0))));
+            	chambre.setCapacity(Integer.valueOf(String.valueOf(jt.getValueAt(i, 1))));
+            	
+            	if (String.valueOf(jt.getValueAt(i, 2)).equals("Normal")) {
+            		chambre.setTypeChambre(1);
+            	}
+            	else
+            		chambre.setTypeChambre(2);
+            	
+            	if (String.valueOf(jt.getValueAt(i, 3)).equals("Free"))
+            		chambre.setStatus(1);
+            	else if (String.valueOf(jt.getValueAt(i, 3)).equals("Occupied"))
+            		chambre.setStatus(2);
+            	else
+            		chambre.setStatus(3);
+            	
+            	chambre.setEtage(Integer.valueOf(String.valueOf(jt.getValueAt(i, 4))));
+            	chambre.setPrix_par_jour(Double.valueOf(String.valueOf(jt.getValueAt(i, 5))));
+            	
+            	Integer hash;
+            	if ((hash = chambreDict.get(chambre.getNumChambre())) != null) {
+            		if (hash != chambre.hashCode())
+            			Chambre.updateChambreDB(chambre);
+            	}
+            	else {
+            		Chambre.NewChambre(chambre);
+            		chambreDict.put(chambre.getNumChambre(), chambre.hashCode());
+            	}
+            }
 		}
-		
-		
-		
+        if (i >= jt.getRowCount())
+        	JOptionPane.showMessageDialog(null, "Succes !","Info",JOptionPane.INFORMATION_MESSAGE);	
+		}
 	}
 	
 	private void DrawTable(ArrayList<Chambre> roomList) {
