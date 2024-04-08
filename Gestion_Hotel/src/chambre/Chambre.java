@@ -109,9 +109,7 @@ public class Chambre {
                 ListRooms.add(room);
             }
             connection.close();
-            for (int i = 0; i < ListRooms.size(); i++) {
-                System.out.println(ListRooms.get(i));
-            }
+            
             return ListRooms;
         } catch (SQLException e) {
             e.printStackTrace();

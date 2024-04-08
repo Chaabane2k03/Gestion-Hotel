@@ -102,7 +102,6 @@ public class Login extends JFrame implements ActionListener {
 	        User user = new User(username, User.cryptPass(pass));
             user = user.getUserFromDB();
 	        if (user != null) {
-	        	//TODO : Check How the login is done and do your tests
 	        	if (user.getTypeuser() == 0) {
 	        		JOptionPane.showMessageDialog(null,"Login successful as admin ","Success",JOptionPane.INFORMATION_MESSAGE);
                     new AdminGui(user);

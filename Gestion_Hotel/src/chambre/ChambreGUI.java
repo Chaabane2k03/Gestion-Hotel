@@ -325,7 +325,8 @@ public class ChambreGUI extends JFrame implements ActionListener {
             					}
             				}else {
             					try {
-            						Double a = Double.valueOf(caseJTable);
+            						@SuppressWarnings("unused")
+									Double a = Double.valueOf(caseJTable);
             						
             					}catch(Exception e1){
             						error = "Price should be Double";
