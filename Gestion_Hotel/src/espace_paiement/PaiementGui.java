@@ -32,7 +32,6 @@ import espace_client.Client;
 import TableModel.EditibleCells;
 import TableModel.MyDefaultTableModel;
 
-import java.awt.event.ActionEvent;
 
 public class PaiementGui extends JFrame implements ActionListener {
 	JTable jt;
