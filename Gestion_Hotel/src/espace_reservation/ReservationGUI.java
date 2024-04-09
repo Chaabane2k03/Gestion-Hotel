@@ -28,6 +28,7 @@ import TableModel.MyDefaultTableModel;
 import espace_Admin.AdminGui;
 import guiElements.Button;
 import login.Login;
+import reception.Receptioniste;
 import user.User;
 
 import java.awt.event.ActionEvent;
@@ -98,8 +99,14 @@ public class ReservationGUI extends JFrame implements ActionListener {
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminGui(user);
-				dispose();
+				if (user.getTypeuser() == 0) {
+					new AdminGui(user);
+					dispose();
+				}
+				else {
+					new Receptioniste(user);
+					dispose();
+				}
 			}
 		});
         home.setBounds(28, 77, 24, 24);
