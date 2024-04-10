@@ -49,6 +49,7 @@ public class SignUp extends javax.swing.JFrame {
 	        }
 	    }
 	public SignUp() {
+		setResizable(false);
         initComponents();
     }
 
@@ -397,17 +398,16 @@ jButton1.addActionListener(new ActionListener() {
 
         jPanel1.add(jPanel3);
         jPanel3.setBounds(10, 55, 739, 517);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
+        GroupLayout groupLayout = new GroupLayout(getContentPane());
+        groupLayout.setHorizontalGroup(
+        	groupLayout.createParallelGroup(Alignment.LEADING)
+        		.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
+        groupLayout.setVerticalGroup(
+        	groupLayout.createParallelGroup(Alignment.LEADING)
+        		.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 561, GroupLayout.PREFERRED_SIZE)
         );
+        getContentPane().setLayout(groupLayout);
 
         pack();
     }

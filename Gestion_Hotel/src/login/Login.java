@@ -23,6 +23,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.Label;
 import javax.swing.JButton;
+import java.awt.Window.Type;
+import java.awt.Dialog.ModalExclusionType;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -54,11 +56,11 @@ public class Login extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Login() {
+		setTitle("Log in - Hotel");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		
 		JButton btnNewButton = new JButton("Sign up now");
 		btnNewButton.addActionListener(new ActionListener() {
