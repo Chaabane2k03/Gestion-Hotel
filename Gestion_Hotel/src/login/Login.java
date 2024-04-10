@@ -31,7 +31,6 @@ public class Login extends JFrame implements ActionListener {
 	static Button button;
 	static JPasswordField pwdField;
 	static Button exit;
-	private java.awt.Button button_1;
 	
 
 	/**
@@ -61,25 +60,26 @@ public class Login extends JFrame implements ActionListener {
 		getContentPane().setLayout(null);
 		setUndecorated(true);
 		
-		button_1 = new java.awt.Button("Sign up");
-		button_1.addActionListener(new ActionListener() {
+		JButton btnNewButton = new JButton("Sign up now");
+		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    SignUp SignUpFrame = new SignUp();
-			    SignUpFrame.setVisible(true);
-			    SignUpFrame.pack();
-			    SignUpFrame.setLocationRelativeTo(null);
-			    
-			 
-			    dispose();
+				  SignUp SignUpFrame = new SignUp();
+				    SignUpFrame.setVisible(true);
+				    SignUpFrame.pack();
+				    SignUpFrame.setLocationRelativeTo(null);
+				    
+				 
+				    dispose();
 			}
-
 		});
 		
-		Label label = new Label("I don't have an account  :");
-		label.setBounds(455, 450, 127, 22);
-		getContentPane().add(label);
-		button_1.setBounds(617, 450, 70, 22);
-		getContentPane().add(button_1);
+		JLabel lblNewLabel = new JLabel("Don't have an account?");
+		lblNewLabel.setForeground(new Color(0, 0, 0));
+		lblNewLabel.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel.setBounds(424, 450, 161, 18);
+		getContentPane().add(lblNewLabel);
+		btnNewButton.setBounds(595, 446, 119, 23);
+		getContentPane().add(btnNewButton);
 		//Champs de texte pour l'email :
 		loginField = new JTextField("");
 		loginField.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
@@ -153,6 +153,5 @@ public class Login extends JFrame implements ActionListener {
 		}
 		
 	}
-	
 }
 

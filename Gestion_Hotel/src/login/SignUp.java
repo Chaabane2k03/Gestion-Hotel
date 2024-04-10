@@ -14,10 +14,15 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Random;
 import javax.swing.GroupLayout.Alignment;
+
 import javax.swing.JOptionPane;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+
 import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -98,14 +103,15 @@ jButton1.addActionListener(new ActionListener() {
         if (jTextField1.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField6.getText().isEmpty() ||
                 jTextField5.getText().isEmpty() || jTextField6.getText().isEmpty() || jTextField8.getText().isEmpty() ||
                 jTextField9.getText().isEmpty() || jPasswordField1.getPassword().length == 0) {
-            Component temporaryLostComponent = null;
-			JOptionPane.showMessageDialog(temporaryLostComponent, this, "Please fill in all the required fields.", type);
-            return; // Exit the method if any field is empty
+        	Component parentComponent = null; 
+        	JOptionPane.showMessageDialog(parentComponent, "Please fill in all the required fields.", "Error", type);
+
+            return; // Exit if any field is empty
         }
         PreparedStatement insertUserStatement = null;
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "");
-            // Check if the client exists or create a new one
+            // Check if the client exists
             int idClient = rand.nextInt(1000);
             String checkClientQuery = "SELECT idclient FROM client WHERE email = ?";
             PreparedStatement checkClientStatement = connection.prepareStatement(checkClientQuery);
@@ -123,7 +129,7 @@ jButton1.addActionListener(new ActionListener() {
                 insertClientStatement.setString(4, mobileNumber);
                 insertClientStatement.setString(5, emailId);
                 insertClientStatement.executeUpdate();
-                // Get the auto-generated ID of the newly inserted client
+               
                 ResultSet generatedKeys = insertClientStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     idClient = generatedKeys.getInt(1);
@@ -142,6 +148,10 @@ jButton1.addActionListener(new ActionListener() {
 
             JOptionPane.showMessageDialog((Component) btnNewButton, "Welcome, " + msg + ". Your account is successfully created");
             connection.close();
+            Login loginFrame = new Login();
+            loginFrame.setVisible(true);
+            loginFrame.setLocationRelativeTo(null); 
+           dispose();  
         } catch (SQLException exception) {
             if (exception instanceof SQLIntegrityConstraintViolationException) {
                 JOptionPane.showMessageDialog((Component) btnNewButton, "Cannot add or update a child row: a foreign key constraint fails. Please enter valid data.");
@@ -158,11 +168,13 @@ jButton1.addActionListener(new ActionListener() {
             }
         }
     }
+
+
 });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign Up");
-        setPreferredSize(new Dimension(850, 750));
+        setPreferredSize(new Dimension(700, 600));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new Dimension(800, 500));
@@ -176,39 +188,47 @@ jButton1.addActionListener(new ActionListener() {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); 
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
+        
+        lblNewLabel = new JLabel("Explore. Dream. Discover - Your journey begins here.");
+        lblNewLabel.setForeground(new Color(255, 255, 255));
+        lblNewLabel.setFont(new Font("Tempus Sans ITC", Font.BOLD, 22));
       
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jLabel2)))
-                .addContainerGap(529, Short.MAX_VALUE))
+        	jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGap(137)
+        					.addComponent(jLabel1))
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGap(104)
+        					.addComponent(jLabel2))
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGap(72)
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(lblNewLabel)
+        						.addComponent(jLabel3))))
+        			.addContainerGap(196, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jLabel1)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(64, 64, 64))
+        	jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(lblNewLabel)
+        			.addGap(104)
+        			.addComponent(jLabel1)
+        			.addGap(30)
+        			.addComponent(jLabel2)
+        			.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addComponent(jLabel3)
+        			.addGap(64))
         );
+        jPanel2.setLayout(jPanel2Layout);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 880, 110);
+        jPanel2.setBounds(0, 0, 834, 53);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -265,7 +285,7 @@ jButton1.addActionListener(new ActionListener() {
 
         jLabel12.setBackground(new java.awt.Color(102, 102, 102));
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); 
-        jLabel12.setText("Emlail :");
+        jLabel12.setText("Email :");
 
         jLabel13.setBackground(new java.awt.Color(102, 102, 102));
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); 
@@ -290,48 +310,42 @@ jButton1.addActionListener(new ActionListener() {
         jPanel3Layout.setHorizontalGroup(
         	jPanel3Layout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addContainerGap(296, Short.MAX_VALUE)
+        			.addComponent(jLabel4)
+        			.addGap(347))
+        		.addGroup(jPanel3Layout.createSequentialGroup()
         			.addGap(44)
-        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
-        				.addComponent(jLabel9)
-        				.addComponent(jLabel5)
-        				.addComponent(jLabel6)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(jLabel5)
+        					.addComponent(jLabel6)
+        					.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+        					.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
+        					.addComponent(jTextField9)
+        					.addComponent(jTextField5))
         				.addComponent(jLabel11)
-        				.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-        				.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
-        				.addComponent(jTextField5)
-        				.addComponent(jTextField9))
-        			.addPreferredGap(ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
+        				.addComponent(jLabel9))
+        			.addGap(64)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(jLabel14)
+        				.addComponent(jLabel15)
+        				.addComponent(jTextField7)
         				.addComponent(jTextField6)
         				.addComponent(jTextField8, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
-        				.addComponent(jTextField7)
         				.addComponent(jLabel12)
-        				.addComponent(jLabel14)
-        				.addComponent(jLabel13))
-        			.addContainerGap(31, Short.MAX_VALUE))
+        				.addComponent(jLabel13)
+        				.addComponent(jPasswordField1))
+        			.addContainerGap(113, Short.MAX_VALUE))
         		.addGroup(jPanel3Layout.createSequentialGroup()
-        			.addContainerGap(367, Short.MAX_VALUE)
-        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(jPanel3Layout.createSequentialGroup()
-        					.addComponent(jLabel4)
-        					.addGap(347))
-        				.addGroup(jPanel3Layout.createSequentialGroup()
-        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
-        					.addGap(336))))
+        			.addContainerGap(261, Short.MAX_VALUE)
+        			.addComponent(jLabel8)
+        			.addGap(18)
+        			.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+        			.addGap(302))
         		.addGroup(Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-        			.addGap(335)
-        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING, false)
-        				.addGroup(jPanel3Layout.createSequentialGroup()
-        					.addComponent(jLabel8)
-        					.addGap(26)
-        					.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-        					.addGap(291))
-        				.addGroup(jPanel3Layout.createSequentialGroup()
-        					.addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-        					.addComponent(jLabel15)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(jPasswordField1, GroupLayout.PREFERRED_SIZE, 270, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap())))
+        			.addGap(295)
+        			.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
         	jPanel3Layout.createParallelGroup(Alignment.LEADING)
@@ -354,35 +368,35 @@ jButton1.addActionListener(new ActionListener() {
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(jTextField3, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
         				.addComponent(jTextField6, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-        			.addGap(39)
-        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(jLabel9, Alignment.TRAILING)
-        				.addComponent(jLabel14, Alignment.TRAILING))
-        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGap(18)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel9)
+        				.addComponent(jLabel14))
+        			.addGap(18)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(jTextField5, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
         				.addComponent(jTextField7, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
         			.addGap(18)
-        			.addComponent(jLabel11)
-        			.addGap(18)
-        			.addComponent(jTextField9, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jPasswordField1, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        				.addComponent(jLabel11)
         				.addComponent(jLabel15))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel8))
-        			.addGap(6)
-        			.addComponent(jButton1, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-        			.addGap(68))
+        				.addComponent(jTextField9, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jPasswordField1, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+        			.addGap(25)
+        			.addComponent(jButton1, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel8)
+        				.addComponent(jButton2))
+        			.addGap(25))
         );
         jPanel3.setLayout(jPanel3Layout);
         jPanel3.setLayout(jPanel3Layout);
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(0, 110, 810, 640);
+        jPanel3.setBounds(10, 55, 739, 517);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -435,5 +449,6 @@ jButton1.addActionListener(new ActionListener() {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private JLabel lblNewLabel;
 
 }
