@@ -31,7 +31,16 @@ public class SignUp extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 6486589998830171874L;
-	
+	private boolean isValidEmail(String email) {
+	    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+	    return email.matches(emailRegex);
+	}
+	private boolean isValidPhoneNumber(String phoneNumber) {
+	 
+	    String phoneRegex = "^\\d{8}$"; 
+	    return phoneNumber.matches(phoneRegex);
+	}
+
 	  private String hashPassword(String password) {
 	        try {
 	           
@@ -97,7 +106,7 @@ jButton1.addActionListener(new ActionListener() {
      
       
         String password = new String(jPasswordField1.getPassword());
-        
+       
         if (!passconf.equals(password))
         {  Component parentComponent = null; 
     	JOptionPane.showMessageDialog(parentComponent, "Passwords dosent match!", "Error", type);
@@ -116,7 +125,16 @@ jButton1.addActionListener(new ActionListener() {
             return; // Exit if any field is empty
         }
         
-      
+        if (!isValidEmail(emailId)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number format
+        if (!isValidPhoneNumber(mobileNumber)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
   
         PreparedStatement insertUserStatement = null;

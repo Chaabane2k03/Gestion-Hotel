@@ -15,16 +15,16 @@ import javax.swing.border.LineBorder;
 import espace_Admin.AdminGui;
 import espace_client.Client_Gui;
 import guiElements.Button;
-import login.SignUp;
+
 import reception.Receptioniste;
 import user.User;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.Label;
+
 import javax.swing.JButton;
-import java.awt.Window.Type;
-import java.awt.Dialog.ModalExclusionType;
+
+
 
 public class Login extends JFrame implements ActionListener {
 
