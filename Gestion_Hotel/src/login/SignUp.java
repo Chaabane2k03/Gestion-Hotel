@@ -40,7 +40,19 @@ public class SignUp extends javax.swing.JFrame {
 	    String phoneRegex = "^\\d{8}$"; 
 	    return phoneNumber.matches(phoneRegex);
 	}
-
+	 private boolean isUsernameExists(String username) {
+	        try {
+	            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "");
+	            String query = "SELECT * FROM user WHERE username=?";
+	            PreparedStatement statement = connection.prepareStatement(query);
+	            statement.setString(1, username);
+	            ResultSet resultSet = statement.executeQuery();
+	            return resultSet.next(); // Returns true if username exists, false otherwise
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	            return true; // Return true in case of any database error to prevent sign-up
+	        }
+	    }
 	  private String hashPassword(String password) {
 	        try {
 	           
@@ -133,6 +145,12 @@ jButton1.addActionListener(new ActionListener() {
         // Validate phone number format
         if (!isValidPhoneNumber(mobileNumber)) {
             JOptionPane.showMessageDialog(null, "Please enter a valid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Check if username already exists
+        if (isUsernameExists(userName)) {
+            JOptionPane.showMessageDialog(null, "Username already exists !", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
