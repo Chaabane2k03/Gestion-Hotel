@@ -23,6 +23,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JPasswordField;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -73,7 +74,6 @@ public class SignUp extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -90,25 +90,35 @@ jButton1.addActionListener(new ActionListener() {
         String userName = jTextField8.getText();
         String mobileNumber = jTextField9.getText();
         String adrs = jTextField5.getText();
-        String typeText = jTextField7.getText();
+        
+        String passconf = new String(passwordField.getPassword());
         int type = 2; // Default value
-        if (!typeText.isEmpty()) {
-            type = Integer.parseInt(typeText);
-        }
+        
+     
       
         String password = new String(jPasswordField1.getPassword());
+        
+        if (!passconf.equals(password))
+        {  Component parentComponent = null; 
+    	JOptionPane.showMessageDialog(parentComponent, "Passwords dosent match!", "Error", type);
+        return; // Exit if any field is empty
+        }
         String msg = "" + firstName;
         Object btnNewButton = null;
        
         String hashedPassword = hashPassword(password);
         if (jTextField1.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField6.getText().isEmpty() ||
                 jTextField5.getText().isEmpty() || jTextField6.getText().isEmpty() || jTextField8.getText().isEmpty() ||
-                jTextField9.getText().isEmpty() || jPasswordField1.getPassword().length == 0) {
+                jTextField9.getText().isEmpty() || jPasswordField1.getPassword().length == 0 || passwordField.getPassword().length == 0) {
         	Component parentComponent = null; 
         	JOptionPane.showMessageDialog(parentComponent, "Please fill in all the required fields.", "Error", type);
 
             return; // Exit if any field is empty
         }
+        
+      
+
+  
         PreparedStatement insertUserStatement = null;
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "");
@@ -278,9 +288,6 @@ jButton1.addActionListener(new ActionListener() {
         jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 14));
         jTextField6.setForeground(new java.awt.Color(102, 102, 102));
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 14)); 
-        jTextField7.setForeground(new java.awt.Color(102, 102, 102));
-
         jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 14));
         jTextField8.setForeground(new java.awt.Color(102, 102, 102));
 
@@ -294,59 +301,62 @@ jButton1.addActionListener(new ActionListener() {
 
         jLabel14.setBackground(new java.awt.Color(102, 102, 102));
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14));
-        jLabel14.setText("Client type :");
+        jLabel14.setText("Password :");
 
         jTextField9.setFont(new java.awt.Font("Segoe UI", 0, 14)); 
         jTextField9.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel15.setBackground(new java.awt.Color(102, 102, 102));
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); 
-        jLabel15.setText("Password :");
+        jLabel15.setText("Password confirmation :");
 
         jButton1.setBackground(new java.awt.Color(51, 102, 255));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Sign Up");
+        
+        passwordField = new JPasswordField();
+        passwordField.setForeground(new Color(102, 102, 102));
+        passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3Layout.setHorizontalGroup(
-        	jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(jPanel3Layout.createSequentialGroup()
-        			.addContainerGap(296, Short.MAX_VALUE)
-        			.addComponent(jLabel4)
-        			.addGap(347))
-        		.addGroup(jPanel3Layout.createSequentialGroup()
-        			.addGap(44)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
-        					.addComponent(jLabel5)
-        					.addComponent(jLabel6)
-        					.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-        					.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
-        					.addComponent(jTextField9)
-        					.addComponent(jTextField5))
-        				.addComponent(jLabel11)
-        				.addComponent(jLabel9))
-        			.addGap(64)
-        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
-        				.addComponent(jLabel14)
-        				.addComponent(jLabel15)
-        				.addComponent(jTextField7)
-        				.addComponent(jTextField6)
-        				.addComponent(jTextField8, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
-        				.addComponent(jLabel12)
-        				.addComponent(jLabel13)
-        				.addComponent(jPasswordField1))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(44)
+        					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        							.addComponent(jLabel5)
+        							.addComponent(jLabel6)
+        							.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+        							.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
+        							.addComponent(jTextField9)
+        							.addComponent(jTextField5))
+        						.addComponent(jLabel11)
+        						.addComponent(jLabel9))
+        					.addGap(64)
+        					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(jPasswordField1)
+        						.addComponent(passwordField)
+        						.addComponent(jLabel14)
+        						.addComponent(jLabel15)
+        						.addComponent(jTextField6)
+        						.addComponent(jTextField8, GroupLayout.DEFAULT_SIZE, 259, GroupLayout.DEFAULT_SIZE)
+        						.addComponent(jLabel12)
+        						.addComponent(jLabel13)))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(262)
+        					.addComponent(jLabel8)
+        					.addGap(18)
+        					.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(295)
+        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(286)
+        					.addComponent(jLabel4)))
         			.addContainerGap(113, Short.MAX_VALUE))
-        		.addGroup(jPanel3Layout.createSequentialGroup()
-        			.addContainerGap(261, Short.MAX_VALUE)
-        			.addComponent(jLabel8)
-        			.addGap(18)
-        			.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-        			.addGap(302))
-        		.addGroup(Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-        			.addGap(295)
-        			.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
         	jPanel3Layout.createParallelGroup(Alignment.LEADING)
@@ -376,7 +386,7 @@ jButton1.addActionListener(new ActionListener() {
         			.addGap(18)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(jTextField5, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jTextField7, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
         			.addGap(18)
         			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(jLabel11)
@@ -446,9 +456,8 @@ jButton1.addActionListener(new ActionListener() {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private JLabel lblNewLabel;
-
+    private JPasswordField passwordField;
 }
