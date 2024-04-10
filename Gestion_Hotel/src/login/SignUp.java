@@ -47,10 +47,10 @@ public class SignUp extends javax.swing.JFrame {
 	            PreparedStatement statement = connection.prepareStatement(query);
 	            statement.setString(1, username);
 	            ResultSet resultSet = statement.executeQuery();
-	            return resultSet.next(); // Returns true if username exists, false otherwise
+	            return resultSet.next(); 
 	        } catch (SQLException ex) {
 	            ex.printStackTrace();
-	            return true; // Return true in case of any database error to prevent sign-up
+	            return true; 
 	        }
 	    }
 	  private String hashPassword(String password) {
@@ -142,13 +142,13 @@ jButton1.addActionListener(new ActionListener() {
             return;
         }
 
-        // Validate phone number format
+
         if (!isValidPhoneNumber(mobileNumber)) {
             JOptionPane.showMessageDialog(null, "Please enter a valid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        // Check if username already exists
+        
         if (isUsernameExists(userName)) {
             JOptionPane.showMessageDialog(null, "Username already exists !", "Error", JOptionPane.ERROR_MESSAGE);
             return;
