@@ -15,11 +15,14 @@ import javax.swing.border.LineBorder;
 import espace_Admin.AdminGui;
 import espace_client.Client_Gui;
 import guiElements.Button;
+import login.SignUp;
 import reception.Receptioniste;
 import user.User;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.Label;
+import javax.swing.JButton;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -28,6 +31,7 @@ public class Login extends JFrame implements ActionListener {
 	static Button button;
 	static JPasswordField pwdField;
 	static Button exit;
+	private java.awt.Button button_1;
 	
 
 	/**
@@ -56,6 +60,26 @@ public class Login extends JFrame implements ActionListener {
 		setBounds(100, 100, 800, 500);
 		getContentPane().setLayout(null);
 		setUndecorated(true);
+		
+		button_1 = new java.awt.Button("Sign up");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    SignUp SignUpFrame = new SignUp();
+			    SignUpFrame.setVisible(true);
+			    SignUpFrame.pack();
+			    SignUpFrame.setLocationRelativeTo(null);
+			    
+			 
+			    dispose();
+			}
+
+		});
+		
+		Label label = new Label("I don't have an account  :");
+		label.setBounds(455, 450, 127, 22);
+		getContentPane().add(label);
+		button_1.setBounds(617, 450, 70, 22);
+		getContentPane().add(button_1);
 		//Champs de texte pour l'email :
 		loginField = new JTextField("");
 		loginField.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
@@ -129,4 +153,6 @@ public class Login extends JFrame implements ActionListener {
 		}
 		
 	}
+	
 }
+
