@@ -15,11 +15,16 @@ import javax.swing.border.LineBorder;
 import espace_Admin.AdminGui;
 import espace_client.Client_Gui;
 import guiElements.Button;
+import login.SignUp;
 import reception.Receptioniste;
 import user.User;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.Label;
+import javax.swing.JButton;
+import java.awt.Window.Type;
+import java.awt.Dialog.ModalExclusionType;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -51,11 +56,32 @@ public class Login extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Login() {
+		setTitle("Log in - Hotel");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
+		
+		JButton btnNewButton = new JButton("Sign up now");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				  SignUp SignUpFrame = new SignUp();
+				    SignUpFrame.setVisible(true);
+				    SignUpFrame.pack();
+				    SignUpFrame.setLocationRelativeTo(null);
+				    
+				 
+				    dispose();
+			}
+		});
+		
+		JLabel lblNewLabel = new JLabel("Don't have an account?");
+		lblNewLabel.setForeground(new Color(0, 0, 0));
+		lblNewLabel.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel.setBounds(424, 450, 161, 18);
+		getContentPane().add(lblNewLabel);
+		btnNewButton.setBounds(595, 446, 119, 23);
+		getContentPane().add(btnNewButton);
 		//Champs de texte pour l'email :
 		loginField = new JTextField("");
 		loginField.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
@@ -130,3 +156,4 @@ public class Login extends JFrame implements ActionListener {
 		
 	}
 }
+
