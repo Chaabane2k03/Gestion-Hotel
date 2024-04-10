@@ -3,10 +3,13 @@ package dashbord;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
+
+import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -22,7 +25,7 @@ import espace_client.Client;
 import guiElements.Button;
 import login.Login;
 import user.User;
-
+import TableModel.FilePrintable;
 import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
@@ -179,6 +182,61 @@ public class Dashbord extends JFrame implements ActionListener {
        
         
         JButton btnImprimer = new JButton("Imprimer");
+        btnImprimer.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		try {
+        			FileWriter fileWriter = new FileWriter("result.txt");
+        			PrintWriter printWriter = new PrintWriter(fileWriter);
+        			
+        			//Pour l'affichage des chambres :
+        			
+        			printWriter.println("Chambres les plus demandées :");
+        			
+        			for (int i = 0; i < jt.getColumnCount(); i++) {
+	                    printWriter.print(jt.getColumnName(i));
+	                    if (i < jt.getColumnCount() - 1) {
+	                    	printWriter.print(",");
+	                    }
+	                }
+					
+	                printWriter.println();
+	                
+					for(int i = 0; i <jt.getRowCount();i++) {
+						for(int j=0; j<jt.getColumnCount();j++) {
+							printWriter.write(jt.getValueAt(i, j).toString()+"\t");
+						}
+						printWriter.println();
+					}
+					
+					//Pour l'affichage des Clients :
+					printWriter.println("Les Clients les plus Réguliers :");
+					
+					for (int i = 0; i < jc.getColumnCount(); i++) {
+	                    printWriter.print(jc.getColumnName(i));
+	                    if (i < jc.getColumnCount() - 1) {
+	                    	printWriter.print(",");
+	                    }
+	                }
+					printWriter.println();
+					for(int i = 0; i <jc.getRowCount();i++) {
+						for(int j=0; j<jc.getColumnCount();j++) {
+							printWriter.write(jc.getValueAt(i, j).toString()+"\t");
+						}
+						printWriter.println();
+					}
+					 printWriter.close();
+					 
+					 PrinterJob job = PrinterJob.getPrinterJob();
+			            job.setPrintable( new FilePrintable("result.txt"));
+			            if (job.printDialog()) {
+			                job.print();
+			            }
+					
+        		}catch(Exception ex) {
+        			System.err.println("Erreur lors de la création ou de l'impression du fichier: " + ex.getMessage());
+        		}
+        	}
+        });
         btnImprimer.setBounds(460, 430, 120, 40);
         getContentPane().add(btnImprimer);
         
