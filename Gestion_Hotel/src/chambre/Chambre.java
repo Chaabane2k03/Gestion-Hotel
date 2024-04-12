@@ -79,10 +79,68 @@ public class Chambre {
     }
     
     //TODO : Fix Chambre classe en modifiant la base de données 
-    
-    
+    public static ArrayList<Chambre> getAvailableRoomsFromDB(String CheckIn,String CheckOut,int capacity){
+    	ArrayList<Chambre> listRooms = null;
+    	try {
+    		String query = "SELECT ch.* FROM chambre ch " +
+                    "LEFT JOIN reservation r ON ch.numchambre=r.id_chambre_reserve AND (r.check_out_date>=? AND r.check_in_date<=?) " +
+                    "WHERE r.id_chambre_reserve IS NULL AND ch.status=1 AND ch.capacity>=? ORDER BY ch.typechambre";
+    		Connection connection = new Connect().getConnection();
+    		listRooms = new ArrayList<Chambre>();
+    		PreparedStatement preparedStmt = connection.prepareStatement(query);
+    		preparedStmt.setString(1,CheckOut);
+    		preparedStmt.setString(2, CheckIn);
+    		preparedStmt.setInt(3,capacity);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            while (resultSet.next()) {
+            	Chambre room = new Chambre();
+            	room.setNumChambre(resultSet.getInt(1));
+                room.setCapacity(resultSet.getInt(2));
+                room.setTypeChambre(resultSet.getInt(3));
+                room.setStatus(resultSet.getInt(4));
+                room.setEtage(resultSet.getInt(5));
+                room.setPrix_par_jour(resultSet.getDouble(6));
+                listRooms.add(room);
+            }
+            connection.close();
+            return listRooms;
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+   
+    public static Chambre getRoomFromId(int id) {
+    	try {
+    		String query="SELECT *\r\n"
+    				+ "FROM chambre\r\n"
+    				+ "WHERE numchambre = ?;\r\n";
+    		Connection connection = new Connect().getConnection();
+    		PreparedStatement preparedStmt = connection.prepareStatement(query);
+    		preparedStmt.setInt(1, id);
+            ResultSet resultSet = preparedStmt.executeQuery();
+    		if (resultSet.next()) {
+                Chambre room = new Chambre();
+                room.setNumChambre(resultSet.getInt(1));
+                room.setCapacity(resultSet.getInt(2));
+                room.setTypeChambre(resultSet.getInt(3));
+                room.setStatus(resultSet.getInt(4));
+                room.setEtage(resultSet.getInt(5));
+                room.setPrix_par_jour(resultSet.getDouble(6));
+                connection.close();
+                return room;
+            }
+    		else {
+    			connection.close();
+    			return null;
+    		}
+            
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
     //Voir la liste des chambres :
-    
     public static ArrayList<Chambre> getRoomsFromDB(int status, int floor, int type) {
         ArrayList<Chambre> ListRooms = null;
         try {
@@ -118,10 +176,13 @@ public class Chambre {
     }
 
     
-    // Suppression d'une chambre :
+    // Suppression d'une chambre : (Fixed)
     public static boolean DeleteChambre(int numChambre) {
         try {
-            String query = "select * from res_cham where numchambre=?";
+            String query = "SELECT c.*\r\n"
+            		+ "FROM chambre c\r\n"
+            		+ "JOIN reservation r ON c.numchambre = r.id_chambre_reserve;\r\n"
+            		+ "WHERE c.numchambre = ?";
             Connection connection = new Connect().getConnection();
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1, numChambre);
@@ -196,15 +257,15 @@ public class Chambre {
 
     }
     
+    
+    
     // Nombre des demandes de réservation :
     public int getNbDemandes() {
         Integer nb = 0;
         try {
-            String query = "SELECT count(*)\r\n"
-                    + "FROM chambre c, reservation r, res_cham rc\r\n"
-                    + "WHERE r.idreservation = rc.idreservation\r\n"
-                    + "AND c.numchambre = rc.numchambre\r\n"
-                    + "AND c.numchambre = ?;";
+            String query = "SELECT COUNT(*) AS nombre_reservations\r\n"
+            		+ "FROM reservation\r\n"
+            		+ "WHERE id_chambre_reserve = ?\r\n";
             Connection connection = new Connect().getConnection();
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1, numChambre);
@@ -220,31 +281,21 @@ public class Chambre {
         return nb;
     }
     
-    // Pour le dashbord : Le nombre des chambres le plus demandées
+    // Pour le dashbord : Le nombre des chambres le plus demandées (Fixed)
     
     public static ArrayList<Chambre> getChambresPlusDemandesFromDB() {
         ArrayList<Chambre> listChambres = null;
         try {
-            String query = "SELECT numchambre, capacity, typechambre, status, etage, prix_par_jour\r\n"
-                    + "FROM chambre c1\r\n"
-                    + "WHERE 3 > ( SELECT count(*)\r\n"
-                    + "			FROM chambre c2\r\n"
-                    + "			WHERE (SELECT count(*)\r\n"
-                    + "					FROM chambre c, reservation r, res_cham rc\r\n"
-                    + "					WHERE r.idreservation = rc.idreservation\r\n"
-                    + "					AND c.numchambre = rc.numchambre\r\n"
-                    + "					AND c.numchambre = c1.numchambre) < (SELECT count(*)\r\n"
-                    + "														FROM chambre c, reservation r, res_cham rc\r\n"
-                    + "														WHERE r.idreservation = rc.idreservation\r\n"
-                    + "														AND c.numchambre = rc.numchambre\r\n"
-                    + "														AND c.numchambre = c2.numchambre)\r\n"
-                    + "\r\n"
-                    + ")\r\n"
-                    + "ORDER BY (SELECT count(*)\r\n"
-                    + "			FROM chambre c, reservation r, res_cham rc\r\n"
-                    + "			WHERE r.idreservation = rc.idreservation\r\n"
-                    + "			AND c.numchambre = rc.numchambre\r\n"
-                    + "			AND c.numchambre = c1.numchambre) DESC;";
+            String query = "SELECT c.numchambre, c.capacity, c.typechambre, c.status, c.etage, c.prix_par_jour, COALESCE(r.nombre_reservations, 0) AS nombre_reservations\r\n"
+            		+ "FROM chambre c\r\n"
+            		+ "LEFT JOIN (\r\n"
+            		+ "    SELECT id_chambre_reserve, COUNT(*) AS nombre_reservations\r\n"
+            		+ "    FROM reservation\r\n"
+            		+ "    GROUP BY id_chambre_reserve\r\n"
+            		+ ") r ON c.numchambre = r.id_chambre_reserve\r\n"
+            		+ "ORDER BY COALESCE(r.nombre_reservations, 0) DESC\r\n"
+            		+ "LIMIT 5;\r\n"
+            		+ "";
 
             Connection connection = new Connect().getConnection();
             listChambres = new ArrayList<Chambre>();
@@ -261,9 +312,10 @@ public class Chambre {
                 listChambres.add(Chambre);
             }
             connection.close();
+            /*
             for (int i = 0; i < listChambres.size(); i++) {
                 System.out.println(listChambres.get(i));
-            }
+            }*/
             return listChambres;
         } catch (SQLException e) {
             e.printStackTrace();

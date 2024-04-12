@@ -3,3 +3,4 @@ numChambre,Capacite,TypeChambre,etage,Prix_par_jour,Nombre de demandes
 1	13	Normal	3	12.5	0	
 Les Clients les plus Réguliers :
 idclient,nom_client,prenom_client,Nombre de reservations
+1	Boussadia	Chaabane	0	

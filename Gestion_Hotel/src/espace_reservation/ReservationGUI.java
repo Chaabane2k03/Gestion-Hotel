@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import espace_client.Client;
 import TableModel.EditibleCells;
 import TableModel.MyDefaultTableModel;
+import chambre.Chambre;
 import espace_Admin.AdminGui;
 import guiElements.Button;
 import login.Login;
@@ -32,6 +33,7 @@ import reception.Receptioniste;
 import user.User;
 
 import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
 
 public class ReservationGUI extends JFrame implements ActionListener {
 	 	JTable jt;
@@ -47,7 +49,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	    JComboBox<String> filtrestatusComboBox;
 	    JComboBox<String> filtretypeComboBox;
 	    JComboBox<String> filtrefloorComboBox;
-
+	    JSpinner spinner;
 	    
 	    
 	    
@@ -138,14 +140,18 @@ public class ReservationGUI extends JFrame implements ActionListener {
         
         
         tabPanel = new JPanel();
-        tabPanel.setSize(680, 330);
+        tabPanel.setSize(680, 169);
         tabPanel.setLocation(100, 60);
         getContentPane().add(tabPanel);
 
+        chamPanel = new JPanel();
+        chamPanel.setSize(680, 135);
+        chamPanel.setLocation(100, 234);
+        getContentPane().add(chamPanel);
 
         JLabel filterLabel = new JLabel("Filters :");
         filterLabel.setSize(60, 30);
-        filterLabel.setLocation(100, 400);
+        filterLabel.setLocation(100, 430);
         filterLabel.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         getContentPane().add(filterLabel);
         
@@ -162,7 +168,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtrestatusComboBox.setModel(
                 new DefaultComboBoxModel<String>(new String[] { "Reg Type", "In Person", "Online" }));
         filtrestatusComboBox.setSize(104, 30);
-        filtrestatusComboBox.setLocation(175, 400);
+        filtrestatusComboBox.setLocation(175, 430);
         getContentPane().add(filtrestatusComboBox);
         
         
@@ -177,7 +183,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtrefloorComboBox.setFocusable(false);
         filtrefloorComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Order by", "date_reservation", "typereservation", "check_in_date", "check_out_date"}));
         filtrefloorComboBox.setSize(104, 30);
-        filtrefloorComboBox.setLocation(290, 400);
+        filtrefloorComboBox.setLocation(290, 430);
         getContentPane().add(filtrefloorComboBox);
         
         
@@ -190,50 +196,59 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtretypeComboBox.setFocusable(false);
         filtretypeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {  "Ascending", "Descending"  }));
         filtretypeComboBox.setSize(104, 30);
-        filtretypeComboBox.setLocation(405, 400);
+        filtretypeComboBox.setLocation(405, 430);
         getContentPane().add(filtretypeComboBox);
         
-        
+        DrawChambreTable(Chambre.getRoomsFromDB(0, 0, 0));
         DrawTable(Reservation.getreservationsFromDB(0, 0, 0));
         
         // add Buttons and call Draw Table Method
         
         resetFiltersButton = new JButton("Reset Filters");
-        resetFiltersButton.setLocation(525, 400);
+        resetFiltersButton.setLocation(525, 430);
         resetFiltersButton.setSize(120, 30);
         resetFiltersButton.addActionListener(this);
         getContentPane().add(resetFiltersButton);
         
         applyFiltersButton = new JButton("Apply Filters");
-        applyFiltersButton.setLocation(666, 400);
+        applyFiltersButton.setLocation(666, 430);
         applyFiltersButton.setSize(104, 30);
         applyFiltersButton.addActionListener(this);
         getContentPane().add(applyFiltersButton);
 
 
         newButton = new JButton("New");
-        newButton.setLocation(200, 450);
+        newButton.setLocation(200, 468);
         newButton.setSize(104, 30);
         newButton.addActionListener(this);
         getContentPane().add(newButton);
 
         deleteButton = new JButton("Delete");
-        deleteButton.setLocation(325, 450);
+        deleteButton.setLocation(325, 468);
         deleteButton.setSize(104, 30);
         deleteButton.addActionListener(this);
         getContentPane().add(deleteButton);
 
         resetButton = new JButton("Refresh");
-        resetButton.setLocation(450, 450);
+        resetButton.setLocation(450, 468);
         resetButton.setSize(104, 30);
         resetButton.addActionListener(this);
         getContentPane().add(resetButton);
 
         saveButton = new JButton("Save Changes");
-        saveButton.setLocation(575, 450);
+        saveButton.setLocation(575, 468);
         saveButton.setSize(104, 30);
         saveButton.addActionListener(this);
         getContentPane().add(saveButton);
+        
+        JLabel lblIdChambre = new JLabel("Id Chambre:");
+        lblIdChambre.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
+        lblIdChambre.setBounds(260, 390, 114, 30);
+        getContentPane().add(lblIdChambre);
+        
+        spinner = new JSpinner();
+        spinner.setBounds(384, 390, 170, 30);
+        getContentPane().add(spinner);
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -241,16 +256,76 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	}
 	
 	
-	
-	
-	
+	//Les Variables :
+    Hashtable<Integer, Integer> chambreDict = new Hashtable<Integer , Integer>();
+    JPanel chamPanel;
+    JTable jc;
+    JScrollPane cp;
+	private void DrawChambreTable(ArrayList<Chambre> roomList) {
+		String column[] = { "Num Room", "Capacity", "Type", "Status", "Floor", "PricePerDay" };
+		Object data[][] = new Object[roomList.size()][6];
+		
+		for (int j=0 ; j< roomList.size();j++) {
+			Chambre current = roomList.get(j);
+			chambreDict.put(current.getNumChambre(), current.hashCode());
+			//Numero de chambre
+			data[j][0] = String.valueOf(current.getNumChambre());
+			//Capacité de chambre
+			data[j][1] = String.valueOf(current.getCapacity());
+			// Type de Chambre :
+			if (current.getTypeChambre() == 1) {
+				data[j][2] = "Normal";
+			}
+			else {
+				data[j][2] = "Vip";
+			}
+			// Statut de Chambre :
+			if(current.getStatus() == 1)
+				data[j][3] = "Free";
+			else if (current.getStatus() == 2)
+				data[j][3] = "Occupied";
+			else 
+				data[j][3] = "Renovating";
+			// Etage :
+			data[j][4] = String.valueOf(current.getEtage());
+			// Prix Par Jour
+			data[j][5] = String.valueOf(current.getPrix_par_jour());
+		}
+		//Sans Modification :
+		EditibleCells editibleCells = new EditibleCells(roomList.size(), 6, true);
+        editibleCells.setCol(0, false);
+        editibleCells.setCol(1, false);
+        editibleCells.setCol(2, false);
+        editibleCells.setCol(3, false);
+        editibleCells.setCol(4, false);
+        editibleCells.setCol(5, false);
+        
+        MyDefaultTableModel myModel = new MyDefaultTableModel(data, column);
+        myModel.setEditable_cells(editibleCells.getEditable_cells());
+		jc = new JTable(new DefaultTableModel(data, column));
+		jc.setModel(myModel);
+		
+		//Pour le Type de Chambre :
+		
+		
+		
+		Dimension d = jc.getPreferredSize();
+		cp = new JScrollPane(jc);
+		cp.setPreferredSize(
+				new Dimension(d.width + 225 , jc.getRowHeight()*20+1)
+				);
+		chamPanel.removeAll();
+		chamPanel.add(cp);
+		chamPanel.repaint();
+		SwingUtilities.updateComponentTreeUI(this);
+	}
 	
 	
     private void DrawTable(ArrayList<Reservation> reservationList) {
         String column[] = { "idreservation", "id_client", "nom_client", "prenom_client", "date_res",
-                "type", "check_in", "check_out", "souhait" };
+                "type", "check_in", "check_out", "souhait" ,"idChambe"};
         ReservationDict = new Hashtable<Integer, Integer>();
-        Object data[][] = new Object[reservationList.size()][9];
+        Object data[][] = new Object[reservationList.size()][10];
         for (int j = 0; j < reservationList.size(); j++) {
             Reservation current = reservationList.get(j);
             ReservationDict.put(current.getIdreservation(), current.hashCode());
@@ -268,13 +343,15 @@ public class ReservationGUI extends JFrame implements ActionListener {
             data[j][6] = String.valueOf(current.getCheck_in_date());
             data[j][7] = String.valueOf(current.getCheck_out_date());
             data[j][8] = String.valueOf(current.getSouhait_particulier());
+            data[j][9] = String.valueOf(current.getChambre().getNumChambre());
 
         }
 
-        EditibleCells editibleCells = new EditibleCells(reservationList.size(), 9, true);
+        EditibleCells editibleCells = new EditibleCells(reservationList.size(), 10, true);
         editibleCells.setCol(0, false);
         editibleCells.setCol(2, false);
         editibleCells.setCol(3, false);
+        editibleCells.setCol(9, false);
         MyDefaultTableModel myModel = new MyDefaultTableModel(data, column);
         myModel.setEditable_cells(editibleCells.getEditable_cells());
         jt = new JTable(new DefaultTableModel(data, column));
@@ -293,12 +370,13 @@ public class ReservationGUI extends JFrame implements ActionListener {
         tabPanel.repaint();
         SwingUtilities.updateComponentTreeUI(this);
     }
-
+    
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//Bouton Refresh :
 				if (e.getSource() == resetButton) {
 	                DrawTable(Reservation.getreservationsFromDB(0, 0, 0));
+	                DrawChambreTable(Chambre.getRoomsFromDB(0, 0, 0));
 				}
 		
 				if (e.getSource() == applyFiltersButton) {
@@ -310,10 +388,9 @@ public class ReservationGUI extends JFrame implements ActionListener {
 				}
 				if (e.getSource() == resetFiltersButton) {
 				      DrawTable(Reservation.getreservationsFromDB(0, 0, 0));
-
-		                typeComboBox.setSelectedIndex(0);
-		                orderComboBox.setSelectedIndex(0);
-		                orderTypeComboBox.setSelectedIndex(0);
+		               typeComboBox.setSelectedIndex(0);
+		               orderComboBox.setSelectedIndex(0);
+		               orderTypeComboBox.setSelectedIndex(0);
 
 		                repaint();
 					
@@ -322,10 +399,13 @@ public class ReservationGUI extends JFrame implements ActionListener {
 					   DefaultTableModel model = (DefaultTableModel) jt.getModel();
 		                int j = 0;
 		                while ((j = jt.getSelectedRow()) != -1) {
-
 		                    String caseJtable = String.valueOf(jt.getValueAt(j, 0));
 		                    if (!caseJtable.isEmpty()) {
-
+		                    	int chambre_id = Integer.valueOf(String.valueOf(jt.getValueAt(j,9)));
+		                    	Chambre chambre = Chambre.getRoomFromId(chambre_id);
+		                    	chambre.setStatus(1);
+		                    	Chambre.updateChambreDB(chambre);
+		                    	
 		                        Reservation.DeleteReservation(Integer.valueOf(caseJtable));
 		                        model.removeRow(j);
 		                        ReservationDict.remove(Integer.valueOf(caseJtable));
@@ -340,13 +420,20 @@ public class ReservationGUI extends JFrame implements ActionListener {
 				if (e.getSource() == newButton) {
 					  DefaultTableModel model = (DefaultTableModel) jt.getModel();
 		                model.addRow(
-		                        new Object[] { "", "", "", "", "2022-05-07", "In Person", "2022-05-07", "2022-05-07", "" });
+		                        new Object[] { "", "", "", "", "2024-05-07", "In Person", "2024-05-07", "2024-05-07", "" });
 
 		                TableColumn col1 = jt.getColumnModel().getColumn(5);
-		                col1.setCellEditor(new DefaultCellEditor(typeComboBox));
+		                col1.setCellEditor(new DefaultCellEditor(statusComboBox));
 				}
+				
+				
+				//MODIFICATIONS MAJEURES :
+				
 				if (e.getSource() == saveButton) {
+					
+					
 					String error = "";
+					
 	                int i;
 	                for (i = 0; i < jt.getRowCount(); i++) {
 	                    int j;
@@ -374,7 +461,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	                                JOptionPane.ERROR_MESSAGE);
 	                        break;
 	                    } else {
-	                        System.out.println("passed");
+	                    	// Initialisation de Reservation :
 	                        Reservation reservation = new Reservation();
 	                        if (!String.valueOf(jt.getValueAt(i, 0)).isEmpty())
 	                            reservation.setIdreservation(Integer.valueOf(String.valueOf(jt.getValueAt(i, 0))));
@@ -392,17 +479,57 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	                        reservation.setCheck_in_date(String.valueOf(jt.getValueAt(i, 6)));
 	                        reservation.setCheck_out_date(String.valueOf(jt.getValueAt(i, 7)));
 	                        reservation.setSouhait_particulier(String.valueOf(jt.getValueAt(i, 8)));
-
+	                        if (jt.getValueAt(i, 9) != null) {
+	                        	reservation.setChambre(Chambre.getRoomFromId((Integer.valueOf(String.valueOf(jt.getValueAt(i, 9))))));
+	                        }
+	                        //Vérification s'il y a des chambres disponibles :
+	                        //Soit free , soit Occupé :
+	                        
 	                        Integer hash;
 	                        if ((hash = ReservationDict.get(reservation.getIdreservation())) != null) {
-	                            if (hash != reservation.hashCode())
-	                                Reservation.updateReservationDB(reservation);
-	                            ReservationDict.put(reservation.getIdreservation(), reservation.hashCode());
+	                            if (hash != reservation.hashCode()) {	                            	
+	                            	Reservation.updateReservationDB(reservation);
+	                            	ReservationDict.put(reservation.getIdreservation(), reservation.hashCode());
+	                            }
+	                                
 
 	                        } else {
-	                            Reservation.NewReservation(reservation);
-	                            ReservationDict.put(Reservation.getIdLastInseredReservation(), reservation.hashCode());
-	                        }
+	                        	int id_chambre = (int) spinner.getValue();
+	        					if (id_chambre <= 0) {
+	        						error="Donner un Id Valide";
+	        						JOptionPane.showMessageDialog(null, error, "Error",
+	                                    JOptionPane.ERROR_MESSAGE);
+	        						return;
+	        					}
+	        					//Vérifier que l'id existe dans la base de données du Chambre :
+	        					Chambre chambreAreserver = new Chambre();
+	        					chambreAreserver = Chambre.getRoomFromId(id_chambre);
+	        					if (chambreAreserver != null) {
+	        						//Vérifier que la chambre est disponible :)
+	        						ArrayList<Chambre> liste_dispo = new ArrayList<Chambre>();
+	        						liste_dispo = Chambre.getAvailableRoomsFromDB(reservation.check_out_date, reservation.check_in_date, 1);
+	        						
+	        						
+	        						if (liste_dispo != null && liste_dispo.contains(chambreAreserver)) {
+	        							chambreAreserver.setStatus(2);
+	        							Chambre.updateChambreDB(chambreAreserver);
+	        							reservation.setChambre(chambreAreserver);
+	        							Reservation.NewReservation(reservation);
+	    	                            ReservationDict.put(Reservation.getIdLastInseredReservation(), reservation.hashCode());
+	    	                            //TODO : Ajouter un paiement 
+	        						}
+	        						else {
+	        							error="Aucune Chambre Disponible";
+		        						JOptionPane.showMessageDialog(null, error, "Error",
+		                                    JOptionPane.ERROR_MESSAGE);
+		        						return;
+	        						}
+	        						
+	        					}
+	        					
+	        					//A Modidier reservation  :
+	                            /*
+	                       */ }
 
 	                    }
 	                }
@@ -410,10 +537,8 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	                    JOptionPane.showMessageDialog(null, "Succes !",
 	                            "Info", JOptionPane.INFORMATION_MESSAGE);
 				}
-	                
+				
+				
 		
 	}
-
-	
-	
 }

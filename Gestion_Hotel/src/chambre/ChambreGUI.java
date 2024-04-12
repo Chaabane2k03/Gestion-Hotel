@@ -290,7 +290,6 @@ public class ChambreGUI extends JFrame implements ActionListener {
 		//Bouton new : Il l'affiche seulement mais sans modifications dans la base de données
 		if (e.getSource() == newButton) {
 			DefaultTableModel model = (DefaultTableModel) jt.getModel();
-			//TODO : Voir le fonctionnement de chaque ligne et corriger cetter ligne de manière à Voir les données modifiés
 			model.addRow(new Object [] {"","","Type","Status",""});
 			TableColumn col = jt.getColumnModel().getColumn(2);
             col.setCellEditor(new DefaultCellEditor(typeComboBox));

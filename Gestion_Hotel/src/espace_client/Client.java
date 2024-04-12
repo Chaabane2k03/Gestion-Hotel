@@ -140,6 +140,32 @@ public class Client {
                 ", email='" + getEmail() + "'" +
                 "}";
     }
+  //Méthode : Trouver un client à partir d'un id d'utilisateur :
+    public static Client getClientFromUser(int idClient) {
+    	try {
+    		String query = "select idclient,nom_client,prenom_client,adresse,num_tel,email from client where idclient = ? ";
+    		Connection connection = new Connect().getConnection();
+    		PreparedStatement preparedStmt = connection.prepareStatement(query);
+    		preparedStmt.setInt(1, idClient);
+    		ResultSet resultSet = preparedStmt.executeQuery();
+            while (resultSet.next()) {
+                Client client = new Client();
+                client.setIdclient(resultSet.getInt(1));
+                client.setNom_client(resultSet.getString(2));
+                client.setPrenom_client(resultSet.getString(3));
+                client.setAdresse(resultSet.getString(4));
+                client.setNum_tel(resultSet.getString(5));
+                client.setEmail(resultSet.getString(6));
+                return client;
+            }
+            connection.close();
+    		
+    		
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
 
     public static ArrayList<Client> getClientsFromDB(int orderby, int desc) {
         ArrayList<Client> listClients = null;
@@ -236,6 +262,8 @@ public class Client {
         }
 
     }
+    
+    
 
     public int getNbReservation() {
         Integer nb = 0;
@@ -287,9 +315,11 @@ public class Client {
                 listClients.add(client);
             }
             connection.close();
+            /*
             for (int i = 0; i < listClients.size(); i++) {
                 System.out.println(listClients.get(i));
             }
+            */
             return listClients;
         } catch (SQLException e) {
             e.printStackTrace();
