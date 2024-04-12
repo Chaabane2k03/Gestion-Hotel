@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import espace_client.Client;
 import DatabaseManagement.Connect;
+import chambre.Chambre;
 
 public class Reservation {
     int idreservation;
@@ -18,12 +20,13 @@ public class Reservation {
     String check_in_date;
     String check_out_date;
     String souhait_particulier;
+    Chambre chambre;
 
     public Reservation() {
     }
 
     public Reservation(int idreservation, Client client, String date_reservation, int typereservation,
-            String check_in_date, String check_out_date, String souhait_particulier) {
+            String check_in_date, String check_out_date, String souhait_particulier,Chambre chambre) {
         this.idreservation = idreservation;
         this.client = client;
         this.date_reservation = date_reservation;
@@ -31,8 +34,19 @@ public class Reservation {
         this.check_in_date = check_in_date;
         this.check_out_date = check_out_date;
         this.souhait_particulier = souhait_particulier;
+        this.setChambre(chambre);
     }
 
+    
+    public Chambre getChambre() {
+		return chambre;
+	}
+
+	public void setChambre(Chambre chambre) {
+		this.chambre = chambre;
+	}
+	
+	
     public int getIdreservation() {
         return this.idreservation;
     }
@@ -99,6 +113,10 @@ public class Reservation {
         return this;
     }
 
+    public Reservation chambre(Chambre chambre) {
+    	setChambre(chambre);
+    	return this;
+    }
     public Reservation date_reservation(String date_reservation) {
         setDate_reservation(date_reservation);
         return this;
@@ -137,13 +155,15 @@ public class Reservation {
                 && typereservation == reservation.typereservation
                 && Objects.equals(check_in_date, reservation.check_in_date)
                 && Objects.equals(check_out_date, reservation.check_out_date)
-                && Objects.equals(souhait_particulier, reservation.souhait_particulier);
+                && Objects.equals(souhait_particulier, reservation.souhait_particulier)
+                && Objects.equals(chambre, reservation.chambre);
+        		
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(idreservation, client, date_reservation, typereservation, check_in_date, check_out_date,
-                souhait_particulier);
+                souhait_particulier,chambre);
     }
 
     @Override
@@ -156,13 +176,19 @@ public class Reservation {
                 ", check_in_date='" + getCheck_in_date() + "'" +
                 ", check_out_date='" + getCheck_out_date() + "'" +
                 ", souhait_particulier='" + getSouhait_particulier() + "'" +
+                ", chambre='" + getChambre() + "'" +
                 "}";
     }
 
     public static ArrayList<Reservation> getreservationsFromDB(int typereservation, int orderby, int desc) {
         ArrayList<Reservation> listReservations = null;
         try {
-            String query = "SELECT idreservation,id_client_reservant,nom_client,prenom_client,date_reservation,typereservation,check_in_date,check_out_date,souhait_particulier FROM  reservation ,client where id_client_reservant = idclient";
+            String query = "SELECT r.*,\r\n"
+            		+ "       cl.nom_client, cl.prenom_client, cl.adresse, cl.num_tel, cl.email\r\n"
+            		+ "FROM reservation r\r\n"
+            		+ "JOIN chambre c ON r.id_chambre_reserve = c.numchambre\r\n"
+            		+ "JOIN client cl ON r.id_client_reservant = cl.idclient;\r\n"
+            		+ "";
             Connection connection = new Connect().getConnection();
             listReservations = new ArrayList<Reservation>();
             if (typereservation != 0)
@@ -190,16 +216,24 @@ public class Reservation {
             ResultSet resultSet = preparedStmt.executeQuery();
             while (resultSet.next()) {
                 Client client = new Client();
+                Chambre chambre = new Chambre();
                 Reservation reservation = new Reservation();
+                //Elements de Reservation
                 reservation.setIdreservation(resultSet.getInt(1));
                 client.setIdclient(resultSet.getInt(2));
-                client.setNom_client(resultSet.getString(3));
-                client.setPrenom_client(resultSet.getString(4));
-                reservation.setDate_reservation(resultSet.getString(5));
-                reservation.setTypereservation(resultSet.getInt(6));
-                reservation.setCheck_in_date(resultSet.getString(7));
-                reservation.setCheck_out_date(resultSet.getString(8));
-                reservation.setSouhait_particulier(resultSet.getString(9));
+                reservation.setDate_reservation(resultSet.getString(3));
+                reservation.setTypereservation(resultSet.getInt(4));
+                reservation.setCheck_in_date(resultSet.getString(5));
+                reservation.setCheck_out_date(resultSet.getString(6));
+                reservation.setSouhait_particulier(resultSet.getString(7));
+                
+                chambre = Chambre.getRoomFromId(resultSet.getInt(8));
+                reservation.setChambre(chambre);
+                
+                
+                client.setNom_client(resultSet.getString(9));
+                client.setPrenom_client(resultSet.getString(10));
+                
                 reservation.setClient(client);
                 listReservations.add(reservation);
             }
@@ -229,9 +263,10 @@ public class Reservation {
         }
     }
 
+    // A Ajouter la réservation :
     public static void NewReservation(Reservation reservation) {
         try {
-            String query = "INSERT INTO Reservation(id_client_reservant,date_reservation,typereservation,check_in_date,check_out_date,souhait_particulier) VALUES (?, ?, ?, ?, ?, ?);";
+            String query = "INSERT INTO Reservation(id_client_reservant,date_reservation,typereservation,check_in_date,check_out_date,souhait_particulier,id_chambre_reserve) VALUES (?, ?, ?, ?, ?, ?,?);";
             Connection connection = new Connect().getConnection();
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1, reservation.getClient().getIdclient());
@@ -240,6 +275,7 @@ public class Reservation {
             preparedStmt.setString(4, reservation.getCheck_in_date());
             preparedStmt.setString(5, reservation.getCheck_out_date());
             preparedStmt.setString(6, reservation.getSouhait_particulier());
+            preparedStmt.setInt(7,reservation.getChambre().getNumChambre());
             preparedStmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
@@ -249,7 +285,7 @@ public class Reservation {
 
     public static void updateReservationDB(Reservation reservation) {
         try {
-            String query = "UPDATE reservation SET id_client_reservant=? , date_reservation=? , typereservation=? , check_in_date=? , check_out_date=? , souhait_particulier=?  WHERE idReservation=?";
+            String query = "UPDATE reservation SET id_client_reservant=? , date_reservation=? , typereservation=? , check_in_date=? , check_out_date=? , souhait_particulier=? , id_chambre_reserve=? WHERE idReservation=?";
             Connection connection = new Connect().getConnection();
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1, reservation.getClient().getIdclient());
@@ -258,7 +294,8 @@ public class Reservation {
             preparedStmt.setString(4, reservation.getCheck_in_date());
             preparedStmt.setString(5, reservation.getCheck_out_date());
             preparedStmt.setString(6, reservation.getSouhait_particulier());
-            preparedStmt.setInt(7, reservation.getIdreservation());
+            preparedStmt.setInt(7, reservation.getChambre().getNumChambre());
+            preparedStmt.setInt(8, reservation.getIdreservation());
             preparedStmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
@@ -285,7 +322,18 @@ public class Reservation {
         return id;
     }
 
+    public static boolean comparerDate(Date d1,Date d2) {
+    	int comparisonResult = d1.compareTo(d2);
+        
+        // Affichage du résultat de la comparaison
+        if (comparisonResult < 0) {
+            return true; // Le cas ou la date d2 est postérieure
+        } else
+        	return false; 
+    }
     public static void main(String[] args) {
         Reservation.getreservationsFromDB(0, 0, 0);
     }
+
+	
 }
