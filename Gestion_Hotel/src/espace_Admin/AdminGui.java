@@ -15,7 +15,10 @@ import espace_paiement.PaiementGui;
 import espace_reservation.ReservationGUI;
 import guiElements.Button;
 import login.Login;
+import user.AddSpecialUser;
 import user.User;
+import javax.swing.JButton;
+import java.awt.Font;
 
 public class AdminGui extends JFrame implements ActionListener {
 
@@ -141,6 +144,18 @@ public class AdminGui extends JFrame implements ActionListener {
         ImageIcon img = new ImageIcon(this.getClass().getResource("/admin_frame.png"));
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
+        
+        JButton btnNewButton = new JButton("Ajouter Admin/Receptioniste");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new AddSpecialUser(user);
+        		dispose();
+        	}
+        	
+        });
+        btnNewButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+        btnNewButton.setBounds(566, 66, 224, 32);
+        getContentPane().add(btnNewButton);
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);

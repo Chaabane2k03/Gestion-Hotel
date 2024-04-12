@@ -191,9 +191,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
     			Date checkOut = check_out.getDate();
     			String souhaitParticulier = souhait_particulier.getText();
     			
-    			/*d = dateChooser.getDate();                      // Date selected by user
-    			sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss");  // Or whatever format you need
-    			s = sdf.format(d);*/
+    			
     			
     			if ( checkIn == null || checkOut == null) {
     				error = "Veuillez remplir tous les champs";
@@ -243,6 +241,9 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
     				Reservation.NewReservation(reservation);
     				chambre.setStatus(2);
     				Chambre.updateChambreDB(chambre);
+    				
+    				//TODO : Ajouter Paiement associé à cette réservation
+    				// TODO : Ajouter un JOptionPane Pour montrer que la réservation a été réuissi 
     			}
     			else {
     				error = "Aucune Chambre est Disponible";

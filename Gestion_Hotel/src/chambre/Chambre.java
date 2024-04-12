@@ -82,15 +82,33 @@ public class Chambre {
     public static ArrayList<Chambre> getAvailableRoomsFromDB(String CheckIn,String CheckOut,int capacity){
     	ArrayList<Chambre> listRooms = null;
     	try {
-    		String query = "SELECT ch.* FROM chambre ch " +
-                    "LEFT JOIN reservation r ON ch.numchambre=r.id_chambre_reserve AND (r.check_out_date>=? AND r.check_in_date<=?) " +
-                    "WHERE r.id_chambre_reserve IS NULL AND ch.status=1 AND ch.capacity>=? ORDER BY ch.typechambre";
+    		String query = "SELECT *\r\n"
+    				+ "FROM chambre\r\n"
+    				+ "WHERE status = 2\r\n"
+    				+ "AND capacity >= ? \r\n"
+    				+ "AND numchambre NOT IN (\r\n"
+    				+ "    SELECT id_chambre_reserve\r\n"
+    				+ "    FROM reservation\r\n"
+    				+ "    WHERE (check_in_date <= ? AND check_out_date >= ?)\r\n"
+    				+ "    OR (check_in_date BETWEEN ? AND ?)\r\n"
+    				+ "    OR (check_out_date BETWEEN ? AND ?)\r\n"
+    				+ ")\r\n"
+    				+ "UNION\r\n"
+    				+ "SELECT *\r\n"
+    				+ "FROM chambre\r\n"
+    				+ "WHERE status = 1\r\n"
+    				+ "AND capacity >= ?";
     		Connection connection = new Connect().getConnection();
     		listRooms = new ArrayList<Chambre>();
     		PreparedStatement preparedStmt = connection.prepareStatement(query);
-    		preparedStmt.setString(1,CheckOut);
-    		preparedStmt.setString(2, CheckIn);
-    		preparedStmt.setInt(3,capacity);
+    		preparedStmt.setString(2,CheckOut);
+    		preparedStmt.setString(5,CheckOut);
+    		preparedStmt.setString(7,CheckOut);
+    		preparedStmt.setString(3, CheckIn);
+    		preparedStmt.setString(4, CheckIn);
+    		preparedStmt.setString(6, CheckIn);
+    		preparedStmt.setInt(1,capacity);
+    		preparedStmt.setInt(8,capacity);
             ResultSet resultSet = preparedStmt.executeQuery();
             while (resultSet.next()) {
             	Chambre room = new Chambre();
