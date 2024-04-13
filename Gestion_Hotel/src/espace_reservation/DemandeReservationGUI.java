@@ -22,6 +22,7 @@ import com.toedter.calendar.JDateChooser;
 import chambre.Chambre;
 import espace_client.Client;
 import espace_client.Client_Gui;
+import espace_paiement.Paiement;
 import guiElements.Button;
 import login.Login;
 import user.User;
@@ -215,7 +216,9 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
     			}
     			
     			//Conversion des Dates en chaine de caractères :
-    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    			long differenceEnMillis = checkOut.getTime() - checkIn.getTime();
+    	        long nbJours = differenceEnMillis / (1000 * 60 * 60 * 24);
     			String check_in_date = sdf.format(checkIn);
     			String check_out_date = sdf.format(checkOut);
     			String aujourdhui = sdf.format(today);
@@ -243,7 +246,20 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
     				Chambre.updateChambreDB(chambre);
     				
     				//TODO : Ajouter Paiement associé à cette réservation
-    				// TODO : Ajouter un JOptionPane Pour montrer que la réservation a été réuissi 
+    				
+    				Paiement paiement = new Paiement();
+    				paiement.setIdreservation(Reservation.getIdLastInseredReservation());
+    				paiement.setDate(aujourdhui);
+    				paiement.setTypepaiement(1);
+    				Double montant = nbJours * chambre.getPrix_par_jour();
+    				paiement.setMontant(montant);
+    				paiement.setSurcharge(0.0);
+    				
+    				
+    				Paiement.NewPaiement(paiement);
+    				// TODO : Ajouter un JOptionPane Pour montrer que la réservation a été réuissi
+            		JOptionPane.showMessageDialog(null,"Reserved Successfully ","Success",JOptionPane.INFORMATION_MESSAGE);
+
     			}
     			else {
     				error = "Aucune Chambre est Disponible";
@@ -266,58 +282,6 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 			
-			
-			//Traitement :
-			
-			/*
-			 *boolean reservable = true;
-			for (Chambre element : liste) {
-				//Si la chambre est free
-	            if (element.getStatus() == 0) {
-	            	if (element.getCapacity() >= nbPersonne) {
-	            		break;
-	            	}
-	            }
-	            else {
-	            	//Si elle est occupé
-	            	if (element.getStatus() == 1) {
-	            		ArrayList<Reservation> list_res =new ArrayList<Reservation>();
-	            		list_res = Chambre.getReservationFromChambre(element);
-	            		if (list_res != null) {
-	            			
-	            			for (Reservation res : list_res) {
-	            				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	            				Date date = null;
-								try {
-									date = dateFormat.parse(res.check_out_date);
-								} catch (ParseException e1) {
-									e1.printStackTrace();
-								}
-	            				if(Reservation.comparerDate(checkIn, date)) {
-	            					reservable = false;
-	            					break;
-	            				}
-	            			}
-	            		}
-	            		
-	            	}
-	            	
-	            }
-	        }
-			if(reservable == false) {
-            	JOptionPane.showMessageDialog(null, "Aucune Chambre Disponible dans cette période ","Error",JOptionPane.ERROR_MESSAGE);
-        	}
-    		else {
-    			//Reservation.NewReservation(null);
-    		} */
-			
-			
-		
-			//TODO : Parcourir les chambres et vérifier la capacité , l'état de chambre dans la période de réservation 
-			
-			//TODO : s'il existe des chambres : on l'ajoute dans la base de données et on imprime une fracture ( calcule le nb de jours Méthode et l'imprime)
-		
 	}
 }

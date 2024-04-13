@@ -192,9 +192,6 @@ public class Paiement {
                 listPaiements.add(paiement);
             }
             connection.close();
-            for (int i = 0; i < listPaiements.size(); i++) {
-                System.out.println(listPaiements.get(i));
-            }
             return listPaiements;
         } catch (SQLException e) {
             e.printStackTrace();

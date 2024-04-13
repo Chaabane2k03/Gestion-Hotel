@@ -238,9 +238,7 @@ public class Reservation {
                 listReservations.add(reservation);
             }
             connection.close();
-            for (int i = 0; i < listReservations.size(); i++) {
-                System.out.println(listReservations.get(i));
-            }
+            
             return listReservations;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -331,10 +331,7 @@ public class Chambre {
                 listChambres.add(Chambre);
             }
             connection.close();
-            /*
-            for (int i = 0; i < listChambres.size(); i++) {
-                System.out.println(listChambres.get(i));
-            }*/
+            
             return listChambres;
         } catch (SQLException e) {
             e.printStackTrace();
