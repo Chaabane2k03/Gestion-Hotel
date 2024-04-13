@@ -20,6 +20,7 @@ public class Chambre {
     private double prix_par_jour; 
 
     public Chambre() {
+    	
     }
 
     public Chambre(int numChambre, int capacity, int typeChambre, int status, int etage) {

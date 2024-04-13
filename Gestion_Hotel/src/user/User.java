@@ -3,6 +3,7 @@ package user;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,6 +102,19 @@ public class User {
    
 	
 	//Interrogation de la Base de données :
+	public static boolean isUsernameExists(String username) {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "");
+            String query = "SELECT * FROM user WHERE username=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return true; 
+        }
+    }
 	
 	//Verifier qu'il existe dans la base de données :
 	public User getUserFromDB() {
@@ -129,6 +143,20 @@ public class User {
     }
 	
 	//L'ajout d'un utilisateur dans la base de données : soit Sign up de client ou l'ajout des admins
+	public static void newSpecialUser(String username,String password,int typeuser) {
+		try {
+            String query = "INSERT INTO USER(username,password,typeuser) VALUES (?, ?, ?);";
+            Connection connection = new Connect().getConnection();
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, username);
+            preparedStmt.setString(2, cryptPass(password));
+            preparedStmt.setInt(3, typeuser);
+            preparedStmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
 	public static void newUser(String username, int idclient, int typeuser) {
         try {
             String query = "INSERT INTO USER(username,password,idclient,typeuser) VALUES (?, ?, ?, ?);";

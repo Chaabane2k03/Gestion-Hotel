@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import espace_Admin.AdminGui;
 import espace_client.Client_Gui;
@@ -119,9 +120,18 @@ public class AddSpecialUser extends JFrame  {
         JButton btnNewButton = new JButton("Ajouter");
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		//TODO : vérifier que l'utilisateur n'existe pas dans la base de données
-        		
-        		//TODO : Ajouter user
+        		//Récupère les élements :
+        		String username = textField.getText();
+        		if (User.isUsernameExists(username)) {
+        			JOptionPane.showMessageDialog(null, "Username already exists !", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+        		}
+        		char[] password = passwordField.getPassword();
+    	        String pass = String.valueOf(password);
+    	        int type = comboBox.getSelectedIndex();
+    	        User.newSpecialUser(username, pass, type);
+        		JOptionPane.showMessageDialog(null,"Added Successfully ","Success",JOptionPane.INFORMATION_MESSAGE);
+
         	}
         });
         btnNewButton.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));

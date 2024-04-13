@@ -1,0 +1,84 @@
+--------------------------Créarion de la fonction------------------------
+CREATE OR REPLACE PROCEDURE chambres_disponibles(
+    date_debut IN DATE,
+    date_fin IN DATE,
+    nb_personnes IN NUMBER,
+    cur OUT SYS_REFCURSOR
+) AS
+BEGIN
+    -- Vérification des paramètres d'entrée
+    IF date_debut IS NULL OR date_fin IS NULL OR nb_personnes IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Tous les paramètres doivent être renseignés.');
+    END IF;
+    
+    IF date_fin <= date_debut THEN
+        RAISE_APPLICATION_ERROR(-20002, 'La date de fin doit être postérieure à la date de début.');
+    END IF;
+    
+    IF nb_personnes <= 0 THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Le nombre de personnes doit être supérieur à zéro.');
+    END IF;
+
+    -- Traitement principal
+    OPEN cur FOR
+    SELECT numchambre, capacity, typechambre, etage, prix_par_jour
+    FROM chambre
+    WHERE capacity >= nb_personnes
+    AND numchambre NOT IN (
+        SELECT id_chambre_reserve
+        FROM reservation
+        WHERE (check_in_date BETWEEN date_debut AND date_fin)
+        OR (check_out_date BETWEEN date_debut AND date_fin)
+        OR (date_debut BETWEEN check_in_date AND check_out_date)
+        OR (date_fin BETWEEN check_in_date AND check_out_date)
+    );
+END chambres_disponibles;
+/
+
+-----------------Bonus : Création  d'un déclencheur : ------------------
+
+
+CREATE OR REPLACE TRIGGER check_room_availability
+BEFORE INSERT OR UPDATE ON reservation
+FOR EACH ROW
+DECLARE
+    v_room_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_room_count
+    FROM chambre
+    WHERE numchambre = :NEW.id_chambre_reserve
+    AND :NEW.check_in_date NOT BETWEEN check_in_date AND check_out_date
+    AND :NEW.check_out_date NOT BETWEEN check_in_date AND check_out_date;
+    
+    IF v_room_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20004, 'La chambre est déjà réservée pour cette période.');
+    END IF;
+END;
+/
+
+
+
+-----------------------Appel de la fonction -----------------------------------
+
+DECLARE
+    v_cur SYS_REFCURSOR;
+BEGIN
+    -- Appel de la procédure pour récupérer les chambres disponibles
+    chambres_disponibles(TO_DATE('2024-04-15', 'YYYY-MM-DD'), TO_DATE('2024-04-20', 'YYYY-MM-DD'), 2, v_cur);
+    
+    -- Affichage des chambres disponibles
+    LOOP
+        FETCH v_cur INTO v_numchambre, v_capacity, v_typechambre, v_etage, v_prix_par_jour;
+        EXIT WHEN v_cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Chambre : ' || v_numchambre || ', Capacité : ' || v_capacity || ', Type : ' || v_typechambre || ', Étage : ' || v_etage || ', Prix par jour : ' || v_prix_par_jour);
+    END LOOP;
+
+    CLOSE v_cur;
+END;
+/
+
+
+
+
+
