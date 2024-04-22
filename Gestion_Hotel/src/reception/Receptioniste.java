@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import compte.CompteGui;
+import espace_client.GestionClientGUI;
 import espace_paiement.PaiementGui;
 import espace_reservation.ReservationGUI;
 import guiElements.Button;
@@ -47,7 +48,6 @@ public class Receptioniste extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		
 		// Home Button
 		Button home = new Button();
@@ -90,7 +90,7 @@ public class Receptioniste extends JFrame implements ActionListener {
         getContentPane().add(gest_compte);
         gest_compte.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				new CompteGui(user);
+				new GestionClientGUI(user);
 				dispose();
 			}
         });
@@ -99,8 +99,12 @@ public class Receptioniste extends JFrame implements ActionListener {
         Button paramCompte = new Button();
         paramCompte.setBounds(	709, 9, 54, 32);
         getContentPane().add(paramCompte);
-        paramCompte.addActionListener(this);
-        
+        paramCompte.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new CompteGui(user);
+        		dispose();
+        	}
+        });
         //Background
         JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);

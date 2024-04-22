@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import chambre.ChambreGUI;
 import compte.CompteGui;
 import dashbord.Dashbord;
+import espace_client.GestionClientGUI;
 import espace_paiement.PaiementGui;
 import espace_reservation.ReservationGUI;
 import guiElements.Button;
@@ -75,7 +76,7 @@ public class AdminGui extends JFrame implements ActionListener {
         getContentPane().add(compte);
         compte.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				new CompteGui(user);
+				new GestionClientGUI(user);
 				dispose();
 			}
         });
@@ -135,9 +136,15 @@ public class AdminGui extends JFrame implements ActionListener {
         //bouton pour acceder aux paramètres de comptes :
         
         Button paramCompte = new Button();
+        paramCompte.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		new CompteGui(user);
+        		dispose();
+        	}
+        });
         paramCompte.setBounds(	709, 9, 54, 32);
         getContentPane().add(paramCompte);
-        paramCompte.addActionListener(this);
 		//Code pour le background:
 		JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);

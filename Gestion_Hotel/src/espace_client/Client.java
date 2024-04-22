@@ -200,9 +200,7 @@ public class Client {
                 listClients.add(client);
             }
             connection.close();
-            for (int i = 0; i < listClients.size(); i++) {
-                System.out.println(listClients.get(i));
-            }
+            
             return listClients;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -210,7 +208,7 @@ public class Client {
         return null;
     }
 
-    public static void DeleteClient(int idclient) {
+    public static boolean DeleteClient(int idclient) {
         try {
             String query = "Delete from Client where idclient=?";
             Connection connection = new Connect().getConnection();
@@ -218,11 +216,13 @@ public class Client {
             preparedStmt.setInt(1, idclient);
             preparedStmt.executeUpdate();
             connection.close();
+            return true;
         } catch (
 
         SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public static void NewClient(Client client) {
@@ -242,7 +242,25 @@ public class Client {
             e.printStackTrace();
         }
     }
+    // TODO : VERIFIER QUE LE CLIENT N'A pas de réservation .
+    public static boolean clientHasReservation(int clientid) {
+    	try {
+    		String query = "SELECT COUNT(*) AS nombre_reservations FROM reservation WHERE id_client_reservant = ?";
+    		Connection connection = new Connect().getConnection();
+    		PreparedStatement preparedStmt = connection.prepareStatement(query);
+    		preparedStmt.setInt(1, clientid);
+    		
+    		ResultSet resultSet = preparedStmt.executeQuery();
 
+            if (resultSet.next()) {
+                int nombreReservations = resultSet.getInt("nombre_reservations");
+                return nombreReservations > 0; 
+            }
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return false;
+    }
     public static void updateclientDB(Client client) {
         try {
             String query = "UPDATE client SET idclient=? , nom_client=? , prenom_client=? , adresse=? , num_tel=? , email=?  WHERE idclient=?";
@@ -286,6 +304,7 @@ public class Client {
         return nb;
     }
 
+    
     public static ArrayList<Client> getRegulierClientsFromDB() {
         ArrayList<Client> listClients = null;
         try {
@@ -315,11 +334,7 @@ public class Client {
                 listClients.add(client);
             }
             connection.close();
-            /*
-            for (int i = 0; i < listClients.size(); i++) {
-                System.out.println(listClients.get(i));
-            }
-            */
+            
             return listClients;
         } catch (SQLException e) {
             e.printStackTrace();
