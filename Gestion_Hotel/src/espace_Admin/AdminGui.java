@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import chambre.ChambreGUI;
-import compte.CompteGui;
+import compte.Changepwd;
 import dashbord.Dashbord;
 import espace_client.GestionClientGUI;
 import espace_paiement.PaiementGui;
@@ -18,7 +18,6 @@ import guiElements.Button;
 import login.Login;
 import user.AddSpecialUser;
 import user.User;
-import javax.swing.JButton;
 import java.awt.Font;
 
 public class AdminGui extends JFrame implements ActionListener {
@@ -139,7 +138,7 @@ public class AdminGui extends JFrame implements ActionListener {
         paramCompte.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		new CompteGui(user);
+        		new Changepwd(user);
         		dispose();
         	}
         });
@@ -152,7 +151,15 @@ public class AdminGui extends JFrame implements ActionListener {
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
         
-        JButton btnNewButton = new JButton("Ajouter Admin/Receptioniste");
+        
+        //A
+        
+        /*button = new Button();
+        button.setBounds(395, 365, 364, 51);
+        getContentPane().add(button);
+        button.addActionListener(this);
+        */
+        Button btnNewButton = new Button();
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		new AddSpecialUser(user);
@@ -161,9 +168,8 @@ public class AdminGui extends JFrame implements ActionListener {
         	
         });
         btnNewButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-        btnNewButton.setBounds(566, 66, 224, 32);
+        btnNewButton.setBounds(461, 90, 273, 35);
         getContentPane().add(btnNewButton);
-        
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 	}

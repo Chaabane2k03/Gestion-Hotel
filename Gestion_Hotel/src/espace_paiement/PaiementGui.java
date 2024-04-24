@@ -1,7 +1,6 @@
 package espace_paiement;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import guiElements.Button;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -104,71 +102,72 @@ public class PaiementGui extends JFrame implements ActionListener {
         });
         logout.setBounds(28, 130, 24, 24);
         getContentPane().add(logout);
-        ImageIcon img = new ImageIcon(this.getClass().getResource("/features_frame.png"));
+        ImageIcon img = new ImageIcon(this.getClass().getResource("/Chambre.png"));
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
         /*------------------------------------------------------------------------*/
         tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.Y_AXIS));
-        tabPanel.setBounds(80, 51, 720, 365);
+        tabPanel.setBounds(80, 51, 720, 325);
         getContentPane().add(tabPanel);
-        JPanel filterPanel = new JPanel();
-        filterPanel.setLocation(81, 416);
-        filterPanel.setSize(719, 42);
-        getContentPane().add(filterPanel);
-        filterPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        
 
         JLabel filterLabel = new JLabel("Filters :");
-        filterPanel.add(filterLabel);
+        filterLabel.setSize(60, 30);
+        filterLabel.setLocation(100, 400);
+        getContentPane().add(filterLabel);
 
         typeComboBox = new JComboBox<String>();
         typeComboBox.setFocusable(false);
         typeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "In Person", "Online" }));
 
         JComboBox<String> filterTypeComboBox = new JComboBox<String>();
+        filterTypeComboBox.setSize(104, 30);
+        filterTypeComboBox.setLocation(405, 400);
         filterTypeComboBox.setFocusable(false);
         filterTypeComboBox
                 .setModel(new DefaultComboBoxModel<String>(
                         new String[] { "Paiement Type", "In Person", "Online" }));
-        filterPanel.add(filterTypeComboBox);
+        getContentPane().add(filterTypeComboBox);
 
         JComboBox<String> orderComboBox = new JComboBox<String>();
+        orderComboBox.setSize(104, 30);
+        orderComboBox.setLocation(290, 400);
         orderComboBox.setFocusable(false);
         orderComboBox.setModel(
                 new DefaultComboBoxModel<String>(
                         new String[] { "Order by", "montant", "date", "surcharge", "typepaiement" }));
-        filterPanel.add(orderComboBox);
+        getContentPane().add(orderComboBox);
 
         JComboBox<String> orderTypeComboBox = new JComboBox<String>();
+        orderTypeComboBox.setSize(104, 30);
+        orderTypeComboBox.setLocation(175, 400);
         orderTypeComboBox.setFocusable(false);
         orderTypeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Ascending", "Descending" }));
-        filterPanel.add(orderTypeComboBox);
+        getContentPane().add(orderTypeComboBox);
 
         DrawTable(Paiement.getpaiementsFromDB(0, 0, 0));
 
-        JButton resetFiltersButton = new JButton("Reset Filters");
-        filterPanel.add(resetFiltersButton);
+        Button resetFiltersButton = new Button();
+        getContentPane().add(resetFiltersButton);
 
-        JButton applyFiltersButton = new JButton("Apply Filters");
-        filterPanel.add(applyFiltersButton);
+        Button applyFiltersButton = new Button();
+        getContentPane().add(applyFiltersButton);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLocation(81, 458);
-        buttonPanel.setSize(719, 42);
-        getContentPane().add(buttonPanel);
+        
 
-        JButton newButton = new JButton("New");
-        buttonPanel.add(newButton);
+        Button newButton = new Button();
+        getContentPane().add(newButton);
 
-        JButton deleteButton = new JButton("Delete");
-        buttonPanel.add(deleteButton);
+        Button deleteButton = new Button();
+        getContentPane().add(deleteButton);
 
-        JButton resetButton = new JButton("Refresh");
-        buttonPanel.add(resetButton);
+        Button resetButton = new Button();
+        getContentPane().add(resetButton);
 
-        JButton saveButton = new JButton("Save Changes");
-        buttonPanel.add(saveButton);
+        Button saveButton = new Button();
+        getContentPane().add(saveButton);
                         // Background :
                         JLabel BackgroundLabel = new JLabel();
                         BackgroundLabel.setBounds(0, 0, 800, 500);

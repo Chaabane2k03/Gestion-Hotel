@@ -10,7 +10,6 @@ import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -57,7 +56,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 	private JTextField nom_client;
 	private JTextField prenom_client;
 	private JTextField souhait_particulier;
-	private JButton reserver;
+	private Button reserver;
 	private JDateChooser check_in;
 	private JDateChooser check_out;
 	private JSpinner nb_personne;
@@ -104,7 +103,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 		// Background :
 		JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);
-        ImageIcon img = new ImageIcon(this.getClass().getResource("/features_frame.png"));
+        ImageIcon img = new ImageIcon(this.getClass().getResource("/reservation_frame.png"));
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
         
@@ -183,7 +182,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
         
         
       //Boutton : 
-        reserver = new JButton("Reserver");
+        reserver = new Button();
         reserver.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String error ="";
@@ -270,7 +269,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
         	}
         });
         reserver.setFont(new Font("Trebuchet MS", Font.BOLD, 18));
-        reserver.setBounds(535, 410, 111, 44);
+        reserver.setBounds(542, 410, 145, 44);
         
         getContentPane().add(reserver);
         

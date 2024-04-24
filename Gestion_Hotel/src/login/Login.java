@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 
 
-
 public class Login extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -34,7 +33,6 @@ public class Login extends JFrame implements ActionListener {
 	static JPasswordField pwdField;
 	static Button exit;
 	
-
 	/**
 	 * Launch the application.
 	 */
@@ -119,7 +117,6 @@ public class Login extends JFrame implements ActionListener {
         this.setVisible(true);
 	}
 	
-	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == button) {
 			String username = loginField.getText();
@@ -143,7 +140,6 @@ public class Login extends JFrame implements ActionListener {
                     new Client_Gui(user);
                     dispose();
 	        	}
-                    
 	        } else
 				JOptionPane.showMessageDialog(null, "Invalid Login or Password!","Error", JOptionPane.ERROR_MESSAGE);
 

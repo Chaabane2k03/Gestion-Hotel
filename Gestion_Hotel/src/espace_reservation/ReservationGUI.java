@@ -10,7 +10,6 @@ import java.util.Hashtable;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -53,12 +52,12 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	    
 	    
 	    
-	    JButton resetFiltersButton;
-	    JButton applyFiltersButton;
-	    JButton newButton;
-	    JButton deleteButton;
-	    JButton resetButton;
-	    JButton saveButton;
+	    Button resetFiltersButton;
+	    Button applyFiltersButton;
+	    Button newButton;
+	    Button deleteButton;
+	    Button resetButton;
+	    Button saveButton;
 	private static final long serialVersionUID = 1L;
 
 
@@ -127,11 +126,13 @@ public class ReservationGUI extends JFrame implements ActionListener {
         logout.setBounds(28, 130, 24, 24);
         getContentPane().add(logout);
     
+        
         JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);
-        ImageIcon img = new ImageIcon(this.getClass().getResource("/features_frame.png"));
+        ImageIcon img = new ImageIcon(this.getClass().getResource("/Chambre.png"));
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
+        
         
         Button aide = new Button();
         aide.setBounds(	28, 468, 23, 20);
@@ -151,7 +152,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
 
         JLabel filterLabel = new JLabel("Filters :");
         filterLabel.setSize(60, 30);
-        filterLabel.setLocation(100, 430);
+        filterLabel.setLocation(100, 413);
         filterLabel.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         getContentPane().add(filterLabel);
         
@@ -168,7 +169,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtrestatusComboBox.setModel(
                 new DefaultComboBoxModel<String>(new String[] { "Reg Type", "In Person", "Online" }));
         filtrestatusComboBox.setSize(104, 30);
-        filtrestatusComboBox.setLocation(175, 430);
+        filtrestatusComboBox.setLocation(175, 413);
         getContentPane().add(filtrestatusComboBox);
         
         
@@ -183,7 +184,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtrefloorComboBox.setFocusable(false);
         filtrefloorComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Order by", "date_reservation", "typereservation", "check_in_date", "check_out_date"}));
         filtrefloorComboBox.setSize(104, 30);
-        filtrefloorComboBox.setLocation(290, 430);
+        filtrefloorComboBox.setLocation(290, 413);
         getContentPane().add(filtrefloorComboBox);
         
         
@@ -196,7 +197,7 @@ public class ReservationGUI extends JFrame implements ActionListener {
         filtretypeComboBox.setFocusable(false);
         filtretypeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {  "Ascending", "Descending"  }));
         filtretypeComboBox.setSize(104, 30);
-        filtretypeComboBox.setLocation(405, 430);
+        filtretypeComboBox.setLocation(405, 413);
         getContentPane().add(filtretypeComboBox);
         
         DrawChambreTable(Chambre.getRoomsFromDB(0, 0, 0));
@@ -204,50 +205,50 @@ public class ReservationGUI extends JFrame implements ActionListener {
         
         // add Buttons and call Draw Table Method
         
-        resetFiltersButton = new JButton("Reset Filters");
-        resetFiltersButton.setLocation(525, 430);
-        resetFiltersButton.setSize(120, 30);
+        resetFiltersButton = new Button();
+        resetFiltersButton.setLocation(519, 397);
+        resetFiltersButton.setSize(110, 37);
         resetFiltersButton.addActionListener(this);
         getContentPane().add(resetFiltersButton);
         
-        applyFiltersButton = new JButton("Apply Filters");
-        applyFiltersButton.setLocation(666, 430);
-        applyFiltersButton.setSize(104, 30);
+        applyFiltersButton = new Button();
+        applyFiltersButton.setLocation(650, 397);
+        applyFiltersButton.setSize(120, 37);
         applyFiltersButton.addActionListener(this);
         getContentPane().add(applyFiltersButton);
 
 
-        newButton = new JButton("New");
-        newButton.setLocation(200, 468);
-        newButton.setSize(104, 30);
+        newButton = new Button();
+        newButton.setLocation(200, 453);
+        newButton.setSize(110, 37);
         newButton.addActionListener(this);
         getContentPane().add(newButton);
 
-        deleteButton = new JButton("Delete");
-        deleteButton.setLocation(325, 468);
-        deleteButton.setSize(104, 30);
+        deleteButton = new Button();
+        deleteButton.setLocation(335, 453);
+        deleteButton.setSize(104, 37);
         deleteButton.addActionListener(this);
         getContentPane().add(deleteButton);
 
-        resetButton = new JButton("Refresh");
-        resetButton.setLocation(450, 468);
-        resetButton.setSize(104, 30);
+        resetButton = new Button();
+        resetButton.setLocation(466, 453);
+        resetButton.setSize(104, 37);
         resetButton.addActionListener(this);
         getContentPane().add(resetButton);
 
-        saveButton = new JButton("Save Changes");
-        saveButton.setLocation(575, 468);
-        saveButton.setSize(104, 30);
+        saveButton = new Button();
+        saveButton.setLocation(593, 455);
+        saveButton.setSize(120, 35);
         saveButton.addActionListener(this);
         getContentPane().add(saveButton);
         
         JLabel lblIdChambre = new JLabel("Id Chambre:");
         lblIdChambre.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
-        lblIdChambre.setBounds(260, 390, 114, 30);
+        lblIdChambre.setBounds(156, 379, 89, 24);
         getContentPane().add(lblIdChambre);
         
         spinner = new JSpinner();
-        spinner.setBounds(384, 390, 170, 30);
+        spinner.setBounds(255, 379, 184, 24);
         getContentPane().add(spinner);
         
         this.setLocationRelativeTo(null);

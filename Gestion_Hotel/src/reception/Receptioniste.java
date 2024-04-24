@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import compte.CompteGui;
+import compte.Changepwd;
 import espace_client.GestionClientGUI;
 import espace_paiement.PaiementGui;
 import espace_reservation.ReservationGUI;
@@ -101,7 +101,7 @@ public class Receptioniste extends JFrame implements ActionListener {
         getContentPane().add(paramCompte);
         paramCompte.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		new CompteGui(user);
+        		new Changepwd(user);
         		dispose();
         	}
         });

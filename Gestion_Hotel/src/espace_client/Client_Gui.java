@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import compte.CompteGui;
+import compte.Changepwd;
 import espace_reservation.DemandeReservationGUI;
 import guiElements.Button;
 import login.Login;
@@ -81,7 +81,7 @@ public class Client_Gui extends JFrame implements ActionListener {
         getContentPane().add(compte);
         compte.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				new CompteGui(user);
+				new Changepwd(user);
 				dispose();
 			}
         });

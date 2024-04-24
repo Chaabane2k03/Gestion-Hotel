@@ -190,6 +190,24 @@ public class User {
         }
     }
 	
+	public static void updateuserDB(User user) {
+        try {
+            String query = "UPDATE user SET iduser=? , username=? , password=? ,typeuser=? WHERE iduser=?";
+            Connection connection = new Connect().getConnection();
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setInt(1, user.getIduser());
+            preparedStmt.setString(2, user.getUsername());
+            preparedStmt.setString(3, user.getPassword());
+            preparedStmt.setInt(4, user.getTypeuser());
+            preparedStmt.setInt(5, user.getIduser());
+            preparedStmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+	
 	 @Override
 	    public String toString() {
 	        return "{" +

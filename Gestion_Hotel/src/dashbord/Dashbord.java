@@ -37,7 +37,6 @@ import chambre.Chambre;
 
 
 import javax.swing.JTable;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 
@@ -53,7 +52,7 @@ public class Dashbord extends JFrame implements ActionListener {
     JScrollPane sc;
     Hashtable<Integer, Integer> ChambreDict;
     
-    JButton btnExport;
+    Button btnExport;
     
 	/**
 	 * Launch the application.
@@ -113,7 +112,7 @@ public class Dashbord extends JFrame implements ActionListener {
 		// Background :
 		JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);
-        ImageIcon img = new ImageIcon(this.getClass().getResource("/features_frame.png"));
+        ImageIcon img = new ImageIcon(this.getClass().getResource("/dashbord_frame.png"));
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
         
@@ -138,7 +137,7 @@ public class Dashbord extends JFrame implements ActionListener {
         DrawTableClient(Client.getRegulierClientsFromDB());
         
         // Les Bouttons
-        JButton btnExport = new JButton("Exporter en CSV");
+        Button btnExport = new Button();
         btnExport.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		JFileChooser fileChooser = new JFileChooser(); 
@@ -177,11 +176,11 @@ public class Dashbord extends JFrame implements ActionListener {
     			}
         	}
         });
-        btnExport.setBounds(275, 430, 145, 40);
+        btnExport.setBounds(303, 443, 138, 34);
         getContentPane().add(btnExport);
        
         
-        JButton btnImprimer = new JButton("Imprimer");
+        Button btnImprimer = new Button();
         btnImprimer.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		try {
@@ -237,7 +236,7 @@ public class Dashbord extends JFrame implements ActionListener {
         		}
         	}
         });
-        btnImprimer.setBounds(460, 430, 120, 40);
+        btnImprimer.setBounds(470, 443, 110, 34);
         getContentPane().add(btnImprimer);
         
         this.setLocationRelativeTo(null);

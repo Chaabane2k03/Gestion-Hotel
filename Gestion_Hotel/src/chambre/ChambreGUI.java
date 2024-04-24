@@ -11,7 +11,6 @@ import java.util.Hashtable;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,12 +49,12 @@ public class ChambreGUI extends JFrame implements ActionListener {
     JComboBox<String> filtrefloorComboBox;
 
     //Les Boutons :
-    JButton resetFiltersButton;
-    JButton applyFiltersButton;
-    JButton newButton;
-    JButton deleteButton;
-    JButton resetButton;
-    JButton saveButton;
+    Button resetFiltersButton;
+    Button applyFiltersButton;
+    Button newButton;
+    Button deleteButton;
+    Button resetButton;
+    Button saveButton;
 	/**
 	 * Launch the application.
 	 */
@@ -114,7 +113,7 @@ public class ChambreGUI extends JFrame implements ActionListener {
 		// Background :
 		JLabel BackgroundLabel = new JLabel();
         BackgroundLabel.setBounds(0, 0, 800, 500);
-        ImageIcon img = new ImageIcon(this.getClass().getResource("/features_frame.png"));
+        ImageIcon img = new ImageIcon(this.getClass().getResource("/Chambre.png")); //Juste modifier le nom -> manque des boutons
         BackgroundLabel.setIcon(img);
         getContentPane().add(BackgroundLabel);
         
@@ -194,40 +193,40 @@ public class ChambreGUI extends JFrame implements ActionListener {
         
         // add Buttons and call Draw Table Method
         
-        resetFiltersButton = new JButton("Reset Filters");
-        resetFiltersButton.setLocation(525, 400);
-        resetFiltersButton.setSize(120, 30);
+        resetFiltersButton = new Button();
+        resetFiltersButton.setLocation(520, 400);
+        resetFiltersButton.setSize(115, 35);
         resetFiltersButton.addActionListener(this);
         getContentPane().add(resetFiltersButton);
         
-        applyFiltersButton = new JButton("Apply Filters");
-        applyFiltersButton.setLocation(666, 400);
-        applyFiltersButton.setSize(104, 30);
+        applyFiltersButton = new Button();
+        applyFiltersButton.setLocation(650, 400);
+        applyFiltersButton.setSize(115, 35);
         applyFiltersButton.addActionListener(this);
         getContentPane().add(applyFiltersButton);
 
 
-        newButton = new JButton("New");
-        newButton.setLocation(200, 450);
-        newButton.setSize(104, 30);
+        newButton = new Button();
+        newButton.setLocation(205, 455);
+        newButton.setSize(104, 35);
         newButton.addActionListener(this);
         getContentPane().add(newButton);
 
-        deleteButton = new JButton("Delete");
-        deleteButton.setLocation(325, 450);
-        deleteButton.setSize(104, 30);
+        deleteButton = new Button();
+        deleteButton.setLocation(335, 455);
+        deleteButton.setSize(105, 35);
         deleteButton.addActionListener(this);
         getContentPane().add(deleteButton);
 
-        resetButton = new JButton("Refresh");
-        resetButton.setLocation(450, 450);
-        resetButton.setSize(104, 30);
+        resetButton = new Button();
+        resetButton.setLocation(469, 455);
+        resetButton.setSize(104, 35);
         resetButton.addActionListener(this);
         getContentPane().add(resetButton);
 
-        saveButton = new JButton("Save Changes");
-        saveButton.setLocation(575, 450);
-        saveButton.setSize(104, 30);
+        saveButton = new Button();
+        saveButton.setLocation(590, 455);
+        saveButton.setSize(120, 35);
         saveButton.addActionListener(this);
         getContentPane().add(saveButton);
         
