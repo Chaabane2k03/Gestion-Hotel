@@ -302,6 +302,24 @@ public class Reservation {
 
     }
 
+    public static boolean reservationHasPaiement(int reservationid) {
+    	try {
+    		String query = "SELECT COUNT(*) AS nombre_paiement FROM paiement WHERE idreservation = ?";
+    		Connection connection = new Connect().getConnection();
+    		PreparedStatement preparedStmt = connection.prepareStatement(query);
+    		preparedStmt.setInt(1, reservationid);
+    		
+    		ResultSet resultSet = preparedStmt.executeQuery();
+
+            if (resultSet.next()) {
+                int nombreReservations = resultSet.getInt("nombre_paiement");
+                return nombreReservations > 0; 
+            }
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return false;
+    }
     public static int getIdLastInseredReservation() {
         int id = 0;
         try {

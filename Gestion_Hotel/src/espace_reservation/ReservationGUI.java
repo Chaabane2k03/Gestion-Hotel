@@ -402,14 +402,26 @@ public class ReservationGUI extends JFrame implements ActionListener {
 		                while ((j = jt.getSelectedRow()) != -1) {
 		                    String caseJtable = String.valueOf(jt.getValueAt(j, 0));
 		                    if (!caseJtable.isEmpty()) {
-		                    	int chambre_id = Integer.valueOf(String.valueOf(jt.getValueAt(j,9)));
-		                    	Chambre chambre = Chambre.getRoomFromId(chambre_id);
-		                    	chambre.setStatus(1);
-		                    	Chambre.updateChambreDB(chambre);
+		                    	if(!Reservation.reservationHasPaiement(Integer.valueOf(caseJtable))) {
+		                    		int chambre_id = Integer.valueOf(String.valueOf(jt.getValueAt(j,9)));
+			                    	Reservation.DeleteReservation(Integer.valueOf(caseJtable));
+			                
+			                    	Chambre chambre = Chambre.getRoomFromId(chambre_id);
+			                    	
+			                    	if(! Chambre.hasReservations(chambre)) {
+			                    		chambre.setStatus(1);
+				                    	Chambre.updateChambreDB(chambre);
+			                    	}
+			                        model.removeRow(j);
+			                        ReservationDict.remove(Integer.valueOf(caseJtable));
+		                    	}
+		                    	else {
+		                    		JOptionPane.showMessageDialog(null, "Client has already payed for this reservation !! ","Error",JOptionPane.ERROR_MESSAGE);
+		                    		break;
+		                    	}
+		                    	//Effacer la réservations de la BD :
 		                    	
-		                        Reservation.DeleteReservation(Integer.valueOf(caseJtable));
-		                        model.removeRow(j);
-		                        ReservationDict.remove(Integer.valueOf(caseJtable));
+		                    	
 
 		                    } else
 		                        model.removeRow(j);

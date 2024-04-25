@@ -150,23 +150,29 @@ public class PaiementGui extends JFrame implements ActionListener {
         DrawTable(Paiement.getpaiementsFromDB(0, 0, 0));
 
         Button resetFiltersButton = new Button();
+        resetFiltersButton.setBounds(526, 400, 104, 30);
         getContentPane().add(resetFiltersButton);
 
         Button applyFiltersButton = new Button();
+        applyFiltersButton.setBounds(656, 401, 104, 36);
         getContentPane().add(applyFiltersButton);
 
         
 
         Button newButton = new Button();
+        newButton.setBounds(203, 454, 104, 36);
         getContentPane().add(newButton);
 
         Button deleteButton = new Button();
+        deleteButton.setBounds(342, 454, 94, 36);
         getContentPane().add(deleteButton);
 
         Button resetButton = new Button();
+        resetButton.setBounds(474, 454, 94, 36);
         getContentPane().add(resetButton);
 
         Button saveButton = new Button();
+        saveButton.setBounds(597, 454, 113, 36);
         getContentPane().add(saveButton);
                         // Background :
                         JLabel BackgroundLabel = new JLabel();
