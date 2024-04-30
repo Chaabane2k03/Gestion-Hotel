@@ -1,6 +1,8 @@
 Chambres les plus demandées :
 numChambre,Capacite,TypeChambre,etage,Prix_par_jour,Nombre de demandes
-1	13	Normal	3	12.5	0	
+1	12	Normal	2	12.45	2	
+2	3	Normal	2	2.5	0	
 Les Clients les plus Réguliers :
 idclient,nom_client,prenom_client,Nombre de reservations
-1	Boussadia	Chaabane	0	
+1	Boussadia	Chaabane	1	
+2	Flen	Fleni	1	

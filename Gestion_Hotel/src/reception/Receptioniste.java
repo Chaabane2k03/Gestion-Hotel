@@ -46,7 +46,7 @@ public class Receptioniste extends JFrame implements ActionListener {
 		setTitle("Espace Receptionist");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
 		
 		// Home Button

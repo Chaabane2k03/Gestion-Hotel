@@ -81,9 +81,8 @@ public class Dashbord extends JFrame implements ActionListener {
 	public Dashbord(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		
 		
 		

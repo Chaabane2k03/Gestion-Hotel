@@ -70,14 +70,13 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
 		
 		
 		//Avoir les infos de client :
 		id_client = user.getIdclient();
 		final Client client = Client.getClientFromUser(id_client);
-		System.out.println(client);
 		
 		//Boutons de nav Bar
 		Button home = new Button();

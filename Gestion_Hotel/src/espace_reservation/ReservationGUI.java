@@ -89,9 +89,8 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	public ReservationGUI(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		
 		
 		
@@ -455,7 +454,6 @@ public class ReservationGUI extends JFrame implements ActionListener {
 	                        caseJtable = String.valueOf(jt.getValueAt(i, j));
 	                        if (j != 5 & j != 2 & j != 3) {
 	                            if (!caseJtable.isEmpty()) {
-	                                System.out.println(Integer.toString(i) + j + caseJtable);
 	                                if (j == 1)
 	                                    try {
 	                                        Integer.valueOf(caseJtable);

@@ -396,10 +396,6 @@ public class Chambre {
         return Objects.hash(numChambre, capacity, typeChambre, status, etage, prix_par_jour);
     }
 
-    public static void main(String[] args) {
-        System.out.println(Chambre.getRoomsFromDB(1, 0, 1).get(0).hashCode());
-    }
-    
     
 }
 

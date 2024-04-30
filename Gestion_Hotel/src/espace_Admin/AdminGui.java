@@ -51,9 +51,8 @@ public class AdminGui extends JFrame implements ActionListener {
 		setTitle("Espace Client");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		
 		//bouton home :
 		Button home = new Button();

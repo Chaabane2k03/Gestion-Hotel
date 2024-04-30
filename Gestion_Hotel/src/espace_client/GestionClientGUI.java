@@ -82,9 +82,8 @@ public class GestionClientGUI extends JFrame implements ActionListener {
 //UI de fRAME 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		//Boutons de nav Bar
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {

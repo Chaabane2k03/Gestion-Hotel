@@ -29,6 +29,7 @@ import user.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.UIManager;
 
 public class ChambreGUI extends JFrame implements ActionListener {
 
@@ -86,9 +87,8 @@ public class ChambreGUI extends JFrame implements ActionListener {
 //UI de fRAME 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
 		getContentPane().setLayout(null);
-		setUndecorated(true);
 		//Boutons de nav Bar
 		Button home = new Button();
 		home.addActionListener(new ActionListener() {
@@ -417,6 +417,7 @@ public class ChambreGUI extends JFrame implements ActionListener {
 		}
 		
 		jt = new JTable(new DefaultTableModel(data, column));
+		jt.setBackground(UIManager.getColor("CheckBoxMenuItem.selectionBackground"));
 		//Pour le Type de Chambre :
 		TableColumn col = jt.getColumnModel().getColumn(2);
 		col.setCellEditor(new DefaultCellEditor(typeComboBox));

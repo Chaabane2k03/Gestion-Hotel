@@ -55,9 +55,8 @@ public class Changepwd extends JFrame implements ActionListener {
     public Changepwd(User user) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 811, 534);
         getContentPane().setLayout(null);
-        setUndecorated(true);
 
         Button home = new Button();
 		home.addActionListener(new ActionListener() {

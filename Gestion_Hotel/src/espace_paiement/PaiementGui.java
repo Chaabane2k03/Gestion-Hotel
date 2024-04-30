@@ -69,9 +69,8 @@ public class PaiementGui extends JFrame implements ActionListener {
 	public PaiementGui(User user) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
-		   getContentPane().setLayout(null);
-		setUndecorated(true);
+		setBounds(100, 100, 811, 534);
+		getContentPane().setLayout(null);
 		
 		
 		
