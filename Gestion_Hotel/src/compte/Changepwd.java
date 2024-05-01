@@ -13,8 +13,10 @@ import java.awt.event.ActionListener;
 import javax.swing.border.LineBorder;
 
 import espace_Admin.AdminGui;
+import espace_client.Client_Gui;
 import guiElements.Button;
 import login.Login;
+import reception.Receptioniste;
 import user.User;
 
 import java.awt.Color;
@@ -61,8 +63,20 @@ public class Changepwd extends JFrame implements ActionListener {
         Button home = new Button();
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminGui(user);
-				dispose();
+				if (user.getTypeuser() == 0) {
+					new AdminGui(user);
+					dispose();
+				}
+				else {
+					if (user.getTypeuser() == 1) {
+						new Receptioniste(user);
+						dispose();
+					}
+					else {
+						new Client_Gui(user);
+						dispose();
+					}
+				}
 			}
 		});
         home.setBounds(28, 54, 24, 24);
