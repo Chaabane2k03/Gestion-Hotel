@@ -268,7 +268,7 @@ public class DemandeReservationGUI extends JFrame implements ActionListener {
         	}
         });
         reserver.setFont(new Font("Trebuchet MS", Font.BOLD, 18));
-        reserver.setBounds(542, 410, 145, 44);
+        reserver.setBounds(547, 456, 133, 31);
         
         getContentPane().add(reserver);
         

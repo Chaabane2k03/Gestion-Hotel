@@ -117,6 +117,7 @@ BEGIN
 END chambres_disponibles;
 /
 
+
 CREATE OR REPLACE TRIGGER check_room_availability
 BEFORE INSERT OR UPDATE ON reservation
 FOR EACH ROW
@@ -156,7 +157,7 @@ VALUES (102, 4, 'Double', 1, 2, 80);
 INSERT INTO reservation (id_client_reservant, date_reservation, typereservation, check_in_date, check_out_date, souhait_particulier, id_chambre_reserve)
 VALUES (2, SYSDATE, 1, TO_DATE('2024-04-15', 'YYYY-MM-DD'), TO_DATE('2024-04-20', 'YYYY-MM-DD'), 'Vue sur la mer',101);
 --Test declencheur (Il va sortir un erreur dans ce cas ):
-INSERT INTO reservation (id_client_reservant, date_reservation, typereservation, check_in_date, check_out_date, souhait_particulier, id_chambre_reserve)
+--INSERT INTO reservation (id_client_reservant, date_reservation, typereservation, check_in_date, check_out_date, souhait_particulier, id_chambre_reserve)
 VALUES (2, SYSDATE, 1, TO_DATE('2024-04-16', 'YYYY-MM-DD'), TO_DATE('2024-04-22', 'YYYY-MM-DD'), 'Vue sur la mer',101);
 -- Test de la procédure chambres_disponibles
 DECLARE
@@ -171,3 +172,76 @@ END;
 /
 
 
+
+
+CREATE OR REPLACE FUNCTION fchambres_disponibles(
+    check_in IN DATE,
+    check_out IN DATE,
+    nb_personnes IN NUMBER
+) RETURN SYS_REFCURSOR IS
+    cur SYS_REFCURSOR;
+BEGIN
+    -- Vérification des données
+    IF check_in IS NULL OR check_out IS NULL OR nb_personnes IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Tous les paramètres doivent être renseignés.');
+    END IF;
+
+    IF check_in >= check_out THEN
+        RAISE_APPLICATION_ERROR(-20002, 'La date de fin doit être postérieure à la date de début.');
+    END IF;
+
+    IF nb_personnes <= 0 THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Le nombre de personnes doit être supérieur à 0.');
+    END IF;
+
+    -- Ouverture du curseur pour récupérer les chambres disponibles
+    OPEN cur FOR
+        SELECT *
+        FROM chambre
+        WHERE capacite >= nb_personnes
+        AND numchambre NOT IN (
+            SELECT id_chambre_reserve
+            FROM reservation
+            WHERE (check_in_date BETWEEN check_in AND check_out)
+            OR (check_out_date BETWEEN check_in AND check_out)
+            OR (check_in BETWEEN check_in_date AND check_out_date)
+            OR (check_out BETWEEN check_in_date AND check_out_date)
+        );
+
+    -- Retourner le curseur
+    RETURN cur;
+END fchambres_disponibles;
+/
+
+
+DECLARE
+    -- Déclaration explicite du curseur basé sur les colonnes de la table chambre
+    
+    TYPE chambre_cursor_type IS RECORD (
+        numchambre chambre.numchambre%TYPE,
+        capacite chambre.capacite%TYPE,
+        typechambre chambre.typechambre%TYPE,
+        statut chambre.statut%TYPE,
+        etage chambre.etage%TYPE,
+        prix_par_jour chambre.prix_par_jour%TYPE
+    );
+
+    -- Déclaration de la variable de curseur
+    chambre_cursor chambre_cursor_type;
+
+    -- Variable pour stocker le curseur retourné par la fonction
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Utilisation de la fonction fchambres_disponibles pour récupérer les chambres disponibles
+    v_cursor := fchambres_disponibles('2024-05-01', '2024-05-05', 2);
+
+    -- Itération sur les résultats du curseur
+    LOOP
+        FETCH v_cursor INTO chambre_cursor;
+        EXIT WHEN v_cursor%NOTFOUND;
+        -- Afficher les informations sur la chambre
+        DBMS_OUTPUT.PUT_LINE('Chambre : ' || chambre_cursor.numchambre || ', Capacité : ' || chambre_cursor.capacite || ', Type : ' || chambre_cursor.typechambre || ', Étage : ' || chambre_cursor.etage || ', Prix par jour : ' || chambre_cursor.prix_par_jour);
+    END LOOP;
+    CLOSE v_cursor;
+END;
+/

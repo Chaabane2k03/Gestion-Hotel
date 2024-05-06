@@ -273,6 +273,10 @@ public class ChambreGUI extends JFrame implements ActionListener {
 			while ((j = jt.getSelectedRow()) != -1) {
 				String caseJtable = String.valueOf(jt.getValueAt(j, 0));
                 if (!caseJtable.isEmpty()) {
+                	if(Chambre.hasReservations(Integer.valueOf(caseJtable))) {
+                		JOptionPane.showMessageDialog(null, "Chambre déja réservé","Error",JOptionPane.ERROR_MESSAGE);
+                    	break;
+                	}
                     if (Chambre.DeleteChambre(Integer.valueOf(caseJtable))) {
                         model.removeRow(j);
                         chambreDict.remove(Integer.valueOf(caseJtable));

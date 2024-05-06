@@ -257,6 +257,33 @@ public class Chambre {
         }
         return true;
     }
+    
+    public static boolean hasReservations(int chambreid) {
+    	Integer nb = 0;
+        try {
+            String query = "SELECT COUNT(*) AS nombre_reservations\r\n"
+            		+ "FROM reservation\r\n"
+            		+ "WHERE id_chambre_reserve = ?\r\n"
+            		+ "AND  check_out_date > ?\r\n";
+            Connection connection = new Connect().getConnection();
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setInt(1, chambreid);
+            //Date d'aujourd'hui
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String aujourdhui = sdf.format(today);
+            preparedStmt.setString(2,aujourdhui);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            while (resultSet.next()) {
+                nb = resultSet.getInt(1);
+            }
+            connection.close();
+            return (nb > 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (nb>0);
+    }
     public static boolean hasReservations(Chambre chambre) {
     	Integer nb = 0;
         try {
